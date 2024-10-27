@@ -8,4 +8,9 @@ class Celda<T> {
     public T getValor() {
         return valor;
     }
+
+    @Override
+    public String toString() {
+        return valor == null ? "null" : valor.toString();
+    }
 }

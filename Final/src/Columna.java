@@ -1,27 +1,29 @@
 import java.util.List;
+import java.util.ArrayList;
 
 class Columna<T> {
     private String nombre;
-    private List<Object> celdas;
+    private List<Celda<T>> celdas;
 
-    public Columna (String nombre){
+    public Columna(String nombre) {
         this.nombre = nombre;
+        this.celdas = new ArrayList<>();
     }
-    public Columna(String nombre, List<Object> listaCelda) {
-        this.nombre = nombre;
-        this.celdas = listaCelda;
 
+    public Columna(String nombre, List<Celda<T>> celdas) {
+        this.nombre = nombre;
+        this.celdas = celdas;
     }
-    public void addCelda(T valor) {
-        celdas.add(new Celda<>(valor));
-    }
-    // Métodos adicionales para acceder a las celdas, etc.
+
     public String getNombre() {
         return nombre;
     }
 
-    public List<Object> getCeldas() {
+    public List<Celda<T>> getCeldas() {
         return celdas;
     }
 
+    public void addCelda(Celda<T> celda) {
+        celdas.add(celda);
+    }
 }

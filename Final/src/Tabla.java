@@ -74,6 +74,15 @@ class Tabla {
         }
     }
 
+    // Constructor de la copia de la tabla original. (Constructor de copia profunda)
+    public Tabla(Tabla otraTabla) {
+        this.nombreTabla = otraTabla.nombreTabla;
+        this.columnas = new ArrayList<>();
+        for (Columna<?> columna : otraTabla.columnas) {
+            this.columnas.add(new Columna<>(columna));
+        }
+    }
+
     public void mostrarTabla() {
         mostrarColumnas();
         mostrarDatos();

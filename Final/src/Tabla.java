@@ -20,6 +20,24 @@ class Tabla {
             columnas.add(new Columna<>(nombreColumna));
         }
     }
+    
+    // Constructor desde Object[][], tomando la primera fila como nombres de columnas
+    public Tabla(String nombreTabla, Object[][] datos) {
+        this.nombreTabla = nombreTabla;
+        this.columnas = new ArrayList<>();
+
+        // Suponemos que la primera fila contiene los nombres de las columnas
+        if (datos.length == 0) return;  // Si no hay datos, se sale del constructor
+
+        // Crear columnas usando los nombres en la primera fila
+        for (int i = 0; i < datos[0].length; i++) {
+            List<Celda<Object>> celdas = new ArrayList<>();
+            for (int j = 1; j < datos.length; j++) { // Empezamos en la segunda fila para obtener datos
+                celdas.add(new Celda<>(datos[j][i]));
+            }
+            columnas.add(new Columna<>(datos[0][i].toString(), celdas));
+        }
+    }
 
     public void cargarDatosTabla(ArchivoCSV archivoCSV) {
         Map<String, List<Object>> datos = archivoCSV.getMap();

@@ -39,6 +39,15 @@ class Tabla {
         }
     }
 
+    // Constructor de la copia de la tabla original. (Constructor de copia profunda)
+    public Tabla(Tabla otraTabla) {
+        this.nombreTabla = otraTabla.nombreTabla;
+        this.columnas = new ArrayList<>();
+        for (Columna<?> columna : otraTabla.columnas) {
+            this.columnas.add(new Columna<>(columna));
+        }
+    }
+    
     // Constructor que recibe una secuencia lineal de datos y nombres de columnas
     public Tabla(String nombreTabla, List<String> nombresColumnas, List<Object> datosLineales) {
         this.nombreTabla = nombreTabla;
@@ -113,15 +122,6 @@ class Tabla {
                 System.out.printf("%-" + anchos.get(j) + "s | ", columnas.get(j).getCeldas().get(i).getValor());
             }
             System.out.println();
-        }
-    }
-
-    // Constructor de la copia de la tabla original. (Constructor de copia profunda)
-    public Tabla(Tabla otraTabla) {
-        this.nombreTabla = otraTabla.nombreTabla;
-        this.columnas = new ArrayList<>();
-        for (Columna<?> columna : otraTabla.columnas) {
-            this.columnas.add(new Columna<>(columna));
         }
     }
 

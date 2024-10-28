@@ -37,5 +37,7 @@ public class App {
         // Mostrar la tabla
         System.out.println("Tabla generada desde secuencia lineal:");
         tabla.mostrarTabla();
+
+        nuevaTabla.mostrarDatos();
     }
 }

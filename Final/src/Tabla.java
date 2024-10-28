@@ -20,7 +20,7 @@ class Tabla {
             columnas.add(new Columna<>(nombreColumna));
         }
     }
-    
+
     // Constructor desde Object[][], tomando la primera fila como nombres de columnas
     public Tabla(String nombreTabla, Object[][] datos) {
         this.nombreTabla = nombreTabla;
@@ -36,6 +36,30 @@ class Tabla {
                 celdas.add(new Celda<>(datos[j][i]));
             }
             columnas.add(new Columna<>(datos[0][i].toString(), celdas));
+        }
+    }
+
+    // Constructor que recibe una secuencia lineal de datos y nombres de columnas
+    public Tabla(String nombreTabla, List<String> nombresColumnas, List<Object> datosLineales) {
+        this.nombreTabla = nombreTabla;
+        this.columnas = new ArrayList<>();
+
+        // Crear columnas a partir de los nombres
+        for (String nombreColumna : nombresColumnas) {
+            columnas.add(new Columna<>(nombreColumna));
+        }
+
+        // Verificar que la cantidad de datos sea un múltiplo del número de columnas
+        int numColumnas = nombresColumnas.size();
+        if (datosLineales.size() % numColumnas != 0) {
+            throw new IllegalArgumentException("La cantidad de datos no coincide con las columnas proporcionadas.");
+        }
+
+        // Distribuir los datos en las columnas
+        for (int i = 0; i < datosLineales.size(); i++) {
+            int colIndex = i % numColumnas;
+            Columna<Object> columna = (Columna<Object>) columnas.get(colIndex);
+            columna.addCelda(new Celda<>(datosLineales.get(i)));
         }
     }
 

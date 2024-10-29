@@ -5,6 +5,9 @@ import java.util.Map;
 class Tabla {
     private String nombreTabla;
     private List<Columna<?>> columnas;
+    private int cantColumnas;
+    private int cantFilas;
+
 
     public Tabla(String nombreTabla, String rutaArchivo) {
         this.nombreTabla = nombreTabla;
@@ -82,6 +85,10 @@ class Tabla {
             Columna<Object> nuevaColumna = new Columna<>(entry.getKey(), celdas);
             columnas.add(nuevaColumna);
         }
+        this.cantColumnas = columnas.size();
+        this.cantFilas = columnas.get(0).getCeldas().size(); 
+
+
     }
     
     public void addColumna(Columna<?> columna) {
@@ -128,5 +135,12 @@ class Tabla {
     public void mostrarTabla() {
         mostrarColumnas();
         mostrarDatos();
-    }
+ 
+   }
+
+   public int getFilas(){
+    System.out.println(cantFilas);
+    return cantFilas;
+
+   }
 }

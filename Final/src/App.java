@@ -2,7 +2,7 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Tabla nuevaTabla = new Tabla("MiTabla","D://Users//DANTE//Documents//ALGO 1//TrabajoFinalAlgoritmos//Final//src//prueba1.csv");
+        Tabla nuevaTabla = new Tabla("MiTabla","C://Users//Administrador//Documentos//Unsam//TrabajoFinalAlgoritmos//Final//src");
         System.out.println("Tabla generada desde Archivo csv:");
         nuevaTabla.mostrarTabla();
         Tabla copiaTabla = new Tabla(nuevaTabla);
@@ -39,5 +39,6 @@ public class App {
         tabla.mostrarTabla();
 
         nuevaTabla.mostrarDatos();
+        nuevaTabla.getFilas();
     }
 }

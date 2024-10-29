@@ -41,7 +41,7 @@ class Tabla {
         for (int i = 0; i < datos[0].length; i++) {
             List<Celda<Object>> celdas = new ArrayList<>();
             for (int j = 1; j < datos.length; j++) { // Empezamos en la segunda fila para obtener datos
-                celdas.add(new Celda<>(datos[j][i]));
+                celdas.add(new Celda<>(datos[j][i],datos[0][i].toString(),celdas.size()-1));
             }
             columnas.add(new Columna<>(datos[0][i].toString(), celdas));
         }
@@ -80,7 +80,7 @@ class Tabla {
         for (int i = 0; i < datosLineales.size(); i++) {
             int colIndex = i % numColumnas;
             Columna<Object> columna = (Columna<Object>) columnas.get(colIndex);
-            columna.addCelda(new Celda<>(datosLineales.get(i)));
+            columna.addCelda(new Celda<>(datosLineales.get(i),columna.getNombre(),i));
         }
         this.cantColumnas = columnas.size();
         setCantFilas();
@@ -91,7 +91,7 @@ class Tabla {
         for (Map.Entry<String, List<Object>> entry : datos.entrySet()) {
             List<Celda<Object>> celdas = new ArrayList<>();
             for (Object valor : entry.getValue()) {
-                celdas.add(new Celda<>(valor));
+                celdas.add(new Celda<>(valor,entry.getKey(),celdas.size()-1));
             }
             Columna<Object> nuevaColumna = new Columna<>(entry.getKey(), celdas);
             columnas.add(nuevaColumna);
@@ -159,5 +159,10 @@ class Tabla {
     public int getColumnas(){
         System.out.println(cantColumnas);
         return cantColumnas;
+    }
+    public void nombreColumnas(){
+        for (Columna columna : columnas){
+            System.out.println(columna.getNombre());
+        }
     }
 }

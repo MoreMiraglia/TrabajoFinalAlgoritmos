@@ -13,6 +13,14 @@ class Celda<T> {
         return valor;
     }
 
+    public void setValor(T nuevoValor) {
+        this.valor = nuevoValor;
+    }
+
+    public int getIndice() {
+        return indice;
+    }
+
     @Override
     public String toString() {
         return valor == null ? "null" : valor.toString();

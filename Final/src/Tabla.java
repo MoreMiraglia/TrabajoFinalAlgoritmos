@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class Tabla {
+class Tabla implements Manipulacion,Limpieza {
     private String nombreTabla;
     private List<Columna<?>> columnas;
     private int cantColumnas;
@@ -97,7 +97,7 @@ class Tabla {
             columnas.add(nuevaColumna);
         }
 
-
+    
 
     }
     public void setCantFilas (){
@@ -106,6 +106,48 @@ class Tabla {
 
     public void addColumna(Columna<?> columna) {
         columnas.add(columna);
+    }
+    @Override
+    public void reasignarValor(String nombre,int indice, Object nuevoValor){
+        for (Columna columna : columnas){
+            if (columna.getNombre().equals(nombre)){
+                columna.modificarValor(indice, nuevoValor);
+            }
+        }
+    }
+
+    @Override
+    public void mostrarNAs() {
+        System.out.println("Celdas con NA en la tabla: " + nombreTabla);
+        boolean hayNAs = false;
+
+        for (Columna<?> columna : columnas) {
+            for (Celda<?> celda : columna.getCeldas()) {
+                if (celda.getValor() == null) {
+                    System.out.println("Columna: " + columna.getNombre() + " Fila n°" + celda.getIndice() +  " - Valor: null");
+                    hayNAs = true;
+                }
+            }
+        }
+
+        if (!hayNAs) {
+            System.out.println("No hay valores NA en la tabla.");
+        }
+    }
+
+    @Override
+    public List<Celda<Object>> leerNAs() {
+        List<Celda<Object>> celdasNA = new ArrayList<>();
+
+        for (Columna<?> columna : columnas) {
+            for (Celda<?> celda : columna.getCeldas()) {
+                if (celda.getValor() == null) {
+                    celdasNA.add((Celda<Object>) celda);
+                }
+            }
+        }
+
+        return celdasNA;
     }
 
     // Métodos de visualización

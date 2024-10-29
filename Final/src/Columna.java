@@ -21,7 +21,7 @@ class Columna<T> {
         this.nombre = otraColumna.nombre;
         this.celdas = new ArrayList<>();
         for (Celda<T> celda : otraColumna.celdas) {
-            this.celdas.add(new Celda<>(celda.getValor())); // Copia de cada celda
+            this.celdas.add(new Celda<>(celda.getValor(),this.nombre,celdas.size()-1)); // Copia de cada celda
         }
     }
     // Getters
@@ -35,6 +35,28 @@ class Columna<T> {
 
     public void addCelda(Celda<T> celda) {
         celdas.add(celda);
+    }
+
+    public void modificarValor(int indice, Object valor){
+    // Permitir valor null sin hacer casting
+    if (valor == null) {
+        celdas.get(indice).setValor(null);
+        return;
+    }
+
+    // Verificar el tipo del valor con el tipo de la columna antes del casting
+        if (!celdas.isEmpty()) {
+            T tipoReferencia = celdas.get(0).getValor();
+            
+            // Verificar si el tipo coincide antes de hacer el casting
+            if (tipoReferencia != null && !tipoReferencia.getClass().isInstance(valor)) {
+                throw new IllegalArgumentException("El tipo del valor no coincide con el tipo de la columna '" + nombre + "'.");
+            }
+        }
+
+        // Realizar el casting a T y modificar el valor
+        T valorConvertido = (T) valor;  // Casting explícito a T
+        celdas.get(indice).setValor(valorConvertido);
     }
 
     

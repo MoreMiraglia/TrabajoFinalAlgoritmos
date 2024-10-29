@@ -41,5 +41,18 @@ public class App {
 
         tablaDesdeMatriz.getFilas();
         tablaDesdeMatriz.getColumnas();
+
+        // Implementacion de Limpieza --------------------------------------------------------------
+        // Detectar y mostrar las celdas con NA usando la interfaz Limpieza
+        System.out.println("\nDetectando valores NA...");
+        tablaDesdeMatriz.mostrarNAs();
+
+        // Leer las celdas con NA y mostrar cuántas hay
+        List<Celda<Object>> celdasNA = tablaDesdeMatriz.leerNAs();
+        System.out.println("\nNúmero de celdas con NA: " + celdasNA.size());
+        // ------------------------------------------------------------------------------------------------
+
+        tabla.reasignarValor("Nombre", 0,"Morena");
+        tabla.mostrarTabla();
     }
 }

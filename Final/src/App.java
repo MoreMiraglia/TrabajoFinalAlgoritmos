@@ -2,9 +2,10 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Tabla nuevaTabla = new Tabla("MiTabla","C://Users//Administrador//Documentos//Unsam//TrabajoFinalAlgoritmos//Final//src");
+        Tabla nuevaTabla = new Tabla("MiTabla","C://Users//dante//OneDrive//Documentos//ALGO1//TrabajoFinalAlgoritmos//Final//src//prueba1.csv");
         System.out.println("Tabla generada desde Archivo csv:");
         nuevaTabla.mostrarTabla();
+
         Tabla copiaTabla = new Tabla(nuevaTabla);
         System.out.println("Tabla generada desde Copia Profunda:");
         copiaTabla.mostrarTabla();
@@ -13,7 +14,7 @@ public class App {
             {"Nombre", "Edad", "Ciudad","Activo"}, // Primera fila con nombres de columnas
             {"Alice", 30, "Nueva York",true},
             {"Bob", 25, null,false},
-            {"Charlie", 35, "Chicago",false}
+            {null, 35, "Chicago",false}
         };
 
         // Crear tabla desde Object[][]
@@ -38,7 +39,7 @@ public class App {
         System.out.println("Tabla generada desde secuencia lineal:");
         tabla.mostrarTabla();
 
-        nuevaTabla.mostrarDatos();
-        nuevaTabla.getFilas();
+        tablaDesdeMatriz.getFilas();
+        tablaDesdeMatriz.getColumnas();
     }
 }

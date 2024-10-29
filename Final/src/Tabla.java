@@ -14,6 +14,9 @@ class Tabla {
         this.columnas = new ArrayList<>();
         ArchivoCSV archivoCSV = new ArchivoCSV(rutaArchivo);
         cargarDatosTabla(archivoCSV);
+        this.cantColumnas = columnas.size();
+        setCantFilas();
+        
     }
 
     public Tabla(String nombreTabla, List<String> nombresColumnas) {
@@ -22,6 +25,8 @@ class Tabla {
         for (String nombreColumna : nombresColumnas) {
             columnas.add(new Columna<>(nombreColumna));
         }
+        this.cantColumnas = columnas.size();
+        setCantFilas();
     }
 
     // Constructor desde Object[][], tomando la primera fila como nombres de columnas
@@ -40,6 +45,8 @@ class Tabla {
             }
             columnas.add(new Columna<>(datos[0][i].toString(), celdas));
         }
+        this.cantColumnas = columnas.size();
+        setCantFilas();
     }
 
     // Constructor de la copia de la tabla original. (Constructor de copia profunda)
@@ -49,6 +56,8 @@ class Tabla {
         for (Columna<?> columna : otraTabla.columnas) {
             this.columnas.add(new Columna<>(columna));
         }
+        this.cantColumnas = columnas.size();
+        setCantFilas();
     }
     
     // Constructor que recibe una secuencia lineal de datos y nombres de columnas
@@ -73,6 +82,8 @@ class Tabla {
             Columna<Object> columna = (Columna<Object>) columnas.get(colIndex);
             columna.addCelda(new Celda<>(datosLineales.get(i)));
         }
+        this.cantColumnas = columnas.size();
+        setCantFilas();
     }
 
     public void cargarDatosTabla(ArchivoCSV archivoCSV) {
@@ -85,12 +96,14 @@ class Tabla {
             Columna<Object> nuevaColumna = new Columna<>(entry.getKey(), celdas);
             columnas.add(nuevaColumna);
         }
-        this.cantColumnas = columnas.size();
-        this.cantFilas = columnas.get(0).getCeldas().size(); 
+
 
 
     }
-    
+    public void setCantFilas (){
+        this.cantFilas = columnas.get(0).getCeldas().size(); 
+    }
+
     public void addColumna(Columna<?> columna) {
         columnas.add(columna);
     }
@@ -138,9 +151,13 @@ class Tabla {
  
    }
 
-   public int getFilas(){
-    System.out.println(cantFilas);
-    return cantFilas;
+    public int getFilas(){
+        System.out.println(cantFilas);
+        return cantFilas;
+    }
 
-   }
+    public int getColumnas(){
+        System.out.println(cantColumnas);
+        return cantColumnas;
+    }
 }

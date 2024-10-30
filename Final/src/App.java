@@ -57,7 +57,10 @@ public class App {
         tabla.mostrarTabla();
 
         tabla.getTipoDato();
-        tabla.agregarFila(List.of("Teresa", 60, true,"Pepe"));
+        tabla.agregarFila(List.of("Teresa", 60, true,60));
         tabla.mostrarTabla();
+
+        tabla.head(2);
+
     }
 }

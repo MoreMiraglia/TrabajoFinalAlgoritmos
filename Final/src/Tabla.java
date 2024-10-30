@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+//prueba
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 
 class Tabla implements Manipulacion,Limpieza {
     private String nombreTabla;
@@ -258,7 +262,7 @@ class Tabla implements Manipulacion,Limpieza {
 
     public void mostrarColumnas() {
         List<Integer> anchos = calcularAnchoColumnas();
-        for (int i = 0; i < columnas.size(); i++) {
+        for (int i = 0; i < cantColumnas; i++) {
             System.out.printf("%-" + anchos.get(i) + "s | ", columnas.get(i).getNombre());
         }
         System.out.println();
@@ -269,10 +273,59 @@ class Tabla implements Manipulacion,Limpieza {
         System.out.println();
     }
 
+    public void head() {
+        int x = 5;
+        if (x > cantFilas) {
+            x = cantFilas; // Limitar x al número de filas disponibles
+        }
+        
+        mostrarColumnas(); // Imprime los nombres de las columnas
+        mostrarDatos(0, x); // Imprime las primeras x filas
+    }
+    
+    public void head(int x) {
+        if (x > cantFilas) {
+            x = cantFilas; // Limitar x al número de filas disponibles
+        }
+        
+        mostrarColumnas(); // Imprime los nombres de las columnas
+        mostrarDatos(0, x); // Imprime las primeras x filas
+    }
+
+    public void tail() {
+        int x = 5;
+        if (x > cantFilas) {
+            x = cantFilas; // Limitar x al número de filas disponibles
+        }
+        
+        mostrarColumnas(); // Imprime los nombres de las columnas
+        mostrarDatos(cantFilas - x, cantFilas); // Imprime las últimas x filas
+    }
+
+    public void tail(int x) {
+        if (x > cantFilas) {
+            x = cantFilas; // Limitar x al número de filas disponibles
+        }
+        
+        mostrarColumnas(); // Imprime los nombres de las columnas
+        mostrarDatos(cantFilas - x, cantFilas); // Imprime las últimas x filas
+    }
+
+
     public void mostrarDatos() {
         List<Integer> anchos = calcularAnchoColumnas();
-        int maxFilas = columnas.get(0).getCeldas().size();
-        for (int i = 0; i < maxFilas; i++) {
+        for (int i = 0; i < cantFilas; i++) {
+            for (int j = 0; j < cantColumnas; j++) {
+                System.out.printf("%-" + anchos.get(j) + "s | ", columnas.get(j).getCeldas().get(i).getValor());
+            }
+            System.out.println();
+        }
+    }
+
+    public void mostrarDatos(int startRow, int endRow) {
+        List<Integer> anchos = calcularAnchoColumnas();
+        
+        for (int i = startRow; i < endRow; i++) {
             for (int j = 0; j < columnas.size(); j++) {
                 System.out.printf("%-" + anchos.get(j) + "s | ", columnas.get(j).getCeldas().get(i).getValor());
             }

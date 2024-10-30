@@ -32,9 +32,30 @@ class Columna<T> {
     public List<Celda<T>> getCeldas() {
         return celdas;
     }
-
+    
+    public void getTipoDeDato() {
+        if (!celdas.isEmpty() && celdas.get(0).getValor() != null) {
+            System.out.println(nombre + " es: " + celdas.get(0).getValor().getClass().getSimpleName());
+        } else {
+            System.out.println("La columna " + nombre + " está vacía o contiene solo valores nulos.");
+        }
+    }
+    
     public void addCelda(Celda<T> celda) {
+        // Si la columna ya tiene celdas, verificar el tipo de dato
+        if (!celdas.isEmpty()) {
+            T tipoReferencia = celdas.get(0).getValor();
+            
+            // Verificar si el tipo coincide antes de agregar la nueva celda
+            if (tipoReferencia != null && !tipoReferencia.getClass().isInstance(celda.getValor())) {
+                throw new IllegalArgumentException("El tipo de dato de la celda no coincide con el tipo de dato de la columna '" + nombre + "'.");
+            }
+        }
         celdas.add(celda);
+    }
+
+    public void eliminarFila (int indiceFila){
+        celdas.remove(indiceFila);
     }
 
     public void modificarValor(int indice, Object valor){
@@ -50,7 +71,7 @@ class Columna<T> {
             
             // Verificar si el tipo coincide antes de hacer el casting
             if (tipoReferencia != null && !tipoReferencia.getClass().isInstance(valor)) {
-                throw new IllegalArgumentException("El tipo del valor no coincide con el tipo de la columna '" + nombre + "'.");
+                throw new IllegalArgumentException("El tipo de dato de la celda no coincide con el tipo de dato de la columna '" + nombre + "'.");
             }
         }
 

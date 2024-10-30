@@ -97,16 +97,109 @@ class Tabla implements Manipulacion,Limpieza {
             columnas.add(nuevaColumna);
         }
 
-    
-
     }
     public void setCantFilas (){
         this.cantFilas = columnas.get(0).getCeldas().size(); 
     }
 
-    public void addColumna(Columna<?> columna) {
+    @Override
+    public void agregarColumna(Columna columna) {
+        if (columna.getCeldas().size() != cantFilas) {
+            throw new IllegalArgumentException("La longitud de la nueva columna debe coincidir con el número de filas de la tabla.");
+        }
         columnas.add(columna);
+        cantColumnas = columnas.size(); 
     }
+
+    @Override
+    public void agregarColumna(String nombre, Object[] nuevaColumnaArray) {
+        // Verificar que la longitud del arreglo coincida con el número de filas de la tabla
+        if (nuevaColumnaArray.length != cantFilas) {
+            throw new IllegalArgumentException("La longitud de la nueva columna debe coincidir con el número de filas de la tabla.");
+        }
+
+        // Crear una lista de celdas a partir del arreglo
+        List<Celda<Object>> celdas = new ArrayList<>();
+        for (int i = 0; i < nuevaColumnaArray.length; i++) {
+            Object valorCelda = nuevaColumnaArray[i];
+            celdas.add(new Celda<>(valorCelda, nombre, i));  // Crear cada celda con el valor, nombre de columna e índice
+        }
+
+        // Crear la nueva columna y añadirla a la tabla
+        Columna<Object> columna = new Columna<>(nombre, celdas);
+        columnas.add(columna);
+
+        // Actualizar el conteo de columnas
+        cantColumnas = columnas.size();
+    }
+
+    @Override
+    public void agregarFila(List<Object> valores) {
+        // Verificar que la cantidad de valores coincida con el número de columnas
+        if (valores.size() != cantColumnas) {
+            throw new IllegalArgumentException("La cantidad de valores no coincide con el número de columnas.");
+        }
+    
+        // Agregar los valores a las columnas correspondientes
+        for (int i = 0; i < valores.size(); i++) {
+            Columna<Object> columna = (Columna<Object>) columnas.get(i);
+            columna.addCelda(new Celda<>(valores.get(i), columna.getNombre(), columna.getCeldas().size()));
+        }
+    
+        // Actualizar el número de filas
+        setCantFilas();
+    }
+
+    public void eliminarColumna(String nombreColumna) {
+        Columna<?> columnaAEliminar = null;
+    
+        // Buscar la columna con el nombre especificado
+        for (Columna<?> columna : columnas) {
+            if (columna.getNombre().equals(nombreColumna)) {
+                columnaAEliminar = columna;
+                break;
+            }
+        }
+    
+        // Si se encuentra la columna, eliminarla de la lista de columnas
+        if (columnaAEliminar != null) {
+            columnas.remove(columnaAEliminar);
+            cantColumnas = columnas.size(); // Actualizar la cantidad de columnas
+        } else {
+            System.out.println("La columna '" + nombreColumna + "' no existe en la tabla.");
+        }
+    }
+
+    public void eliminarFila(int indiceFila) {
+        // Verificar si el índice de la fila es válido
+        if (indiceFila < 0 || indiceFila >= cantFilas) {
+            throw new IndexOutOfBoundsException("Índice de fila fuera de rango.");
+        }
+    
+        // Eliminar la celda correspondiente en cada columna
+        for (Columna<?> columna : columnas) {
+            columna.eliminarFila(indiceFila);
+        }
+        cantFilas--; // Actualizar la cantidad de filas
+    }
+
+    public void getTipoDato(){
+        for (Columna<?> columna : columnas) {
+            columna.getTipoDeDato();           
+        }
+    }
+
+    public void getTipoDato (String nombreColumna) {
+        for (Columna<?> columna : columnas) {
+            if (columna.getNombre().equals(nombreColumna)) {
+                columna.getTipoDeDato();
+                break;
+            }
+        }
+        System.out.println("La columna '" + nombreColumna + "' no existe en la tabla.");
+    }
+    
+
     @Override
     public void reasignarValor(String nombre,int indice, Object nuevoValor){
         for (Columna columna : columnas){

@@ -2,10 +2,9 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Tabla nuevaTabla = new Tabla("MiTabla","C://Users//dante//OneDrive//Documentos//ALGO1//TrabajoFinalAlgoritmos//Final//src//prueba1.csv");
+        Tabla nuevaTabla = new Tabla("MiTabla","D://Users//DANTE//Documents//ALGO 1//TrabajoFinalAlgoritmos//Final//src//prueba1.csv");
         System.out.println("Tabla generada desde Archivo csv:");
         nuevaTabla.mostrarTabla();
-
         Tabla copiaTabla = new Tabla(nuevaTabla);
         System.out.println("Tabla generada desde Copia Profunda:");
         copiaTabla.mostrarTabla();
@@ -14,7 +13,7 @@ public class App {
             {"Nombre", "Edad", "Ciudad","Activo"}, // Primera fila con nombres de columnas
             {"Alice", 30, "Nueva York",true},
             {"Bob", 25, null,false},
-            {null, 35, "Chicago",false}
+            {"Charlie", 35, "Chicago",false}
         };
 
         // Crear tabla desde Object[][]
@@ -38,9 +37,8 @@ public class App {
         // Mostrar la tabla
         System.out.println("Tabla generada desde secuencia lineal:");
         tabla.mostrarTabla();
-
-        tablaDesdeMatriz.getFilas();
-        tablaDesdeMatriz.getColumnas();
+        System.out.println("Tabla generada desde Object[][]:");
+        tablaDesdeMatriz.mostrarTabla();
 
         // Implementacion de Limpieza --------------------------------------------------------------
         // Detectar y mostrar las celdas con NA usando la interfaz Limpieza
@@ -52,7 +50,14 @@ public class App {
         System.out.println("\nNúmero de celdas con NA: " + celdasNA.size());
         // ------------------------------------------------------------------------------------------------
 
-        tabla.reasignarValor("Nombre", 0,"Morena");
+        Object[] nuevaColumna = {30, 25, 35}; // Nueva columna con datos para cada fila
+        tabla.agregarColumna("Edad", nuevaColumna);
+
+        System.out.println("Columna agregada desde secuencia lineal");
+        tabla.mostrarTabla();
+
+        tabla.getTipoDato();
+        tabla.agregarFila(List.of("Teresa", 60, true,"Pepe"));
         tabla.mostrarTabla();
     }
 }

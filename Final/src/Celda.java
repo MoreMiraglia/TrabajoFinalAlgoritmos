@@ -25,4 +25,5 @@ class Celda<T> {
     public String toString() {
         return valor == null ? "null" : valor.toString();
     }
+
 }

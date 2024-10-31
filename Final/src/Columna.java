@@ -82,5 +82,66 @@ class Columna<T> {
         celdas.get(indice).setValor(valorConvertido);
     }
 
-    
+    public void reemplazarNAs() {
+            Class<?> tipoDato = getTipoDeDato();
+            
+            if (tipoDato == Integer.class) {
+                // Calcular promedio de valores no nulos
+                double promedio = getCeldas().stream()
+                                         .filter(celda -> celda.getValor() != null)
+                                         .mapToInt(celda -> (Integer) celda.getValor())
+                                         .average()
+                                         .orElse(0);
+                T valor = (T) Double.valueOf(promedio);
+                
+                // Reemplazar valores null por el promedio
+                for (Celda<T> celda : getCeldas()) {
+                    if (celda.getValor() == null) {
+                        celda.setValor(valor);
+                    }
+                }
+                
+            } else if (tipoDato == Float.class) {
+                // Calcular promedio de valores no nulos
+                double promedio = getCeldas().stream()
+                                         .filter(celda -> celda.getValor() != null)
+                                         .mapToDouble(celda -> (Float) celda.getValor())
+                                         .average()
+                                         .orElse(0);
+                T valor = (T) Double.valueOf(promedio);
+
+                // Reemplazar valores null por el promedio
+                for (Celda<T> celda : getCeldas()) {
+                    if (celda.getValor() == null) {
+                        celda.setValor(valor);
+                    }
+                }
+                
+            } else if (tipoDato == Boolean.class) {
+                // Contar frecuencia de true y false
+                long countTrue = getCeldas().stream()
+                                        .filter(celda -> celda.getValor() != null)
+                                        .filter(celda -> (Boolean) celda.getValor())
+                                        .count();
+
+
+
+                long countFalse = getCeldas().stream()
+                                         .filter(celda -> celda.getValor() != null)
+                                         .filter(celda -> !(Boolean) celda.getValor())
+                                         .count();
+
+                // Determinar el valor más frecuente
+                boolean valorMasFrecuente = countTrue >= countFalse;
+
+                T valor = (T) Boolean.valueOf(valorMasFrecuente);
+
+                // Reemplazar valores null por el valor más frecuente
+                for (Celda<T> celda : getCeldas()) {
+                    if (celda.getValor() == null) {
+                        celda.setValor(valor);
+                }
+            }
+        }
+    }
 }

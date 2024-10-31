@@ -2,7 +2,7 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Tabla nuevaTabla = new Tabla("MiTabla","D://Users//DANTE//Documents//ALGO 1//TrabajoFinalAlgoritmos//Final//src//prueba1.csv");
+        Tabla nuevaTabla = new Tabla("MiTabla","/home/laura/Escritorio/Algo1/TrabajoFinalAlgoritmos/Final/src/prueba1.csv");
         System.out.println("Tabla generada desde Archivo csv:");
         nuevaTabla.mostrarTabla();
         Tabla copiaTabla = new Tabla(nuevaTabla);
@@ -13,8 +13,10 @@ public class App {
             {"Nombre", "Edad", "Ciudad","Activo"}, // Primera fila con nombres de columnas
             {"Alice", 30, "Nueva York",true},
             {"Bob", 25, null,false},
-            {"Charlie", 35, "Chicago",false}
+            {"Charlie", 35, "Chicago",false},
+            {"tumama", null, "dondevivetumama", null}
         };
+
 
         // Crear tabla desde Object[][]
         Tabla tablaDesdeMatriz = new Tabla("TablaMatriz", datosMatriz);
@@ -48,6 +50,11 @@ public class App {
         // Leer las celdas con NA y mostrar cuántas hay
         List<Celda<Object>> celdasNA = tablaDesdeMatriz.leerNAs();
         System.out.println("\nNúmero de celdas con NA: " + celdasNA.size());
+
+        tablaDesdeMatriz.reemplazarNAs();
+        tablaDesdeMatriz.mostrarTabla();
+
+
         // ------------------------------------------------------------------------------------------------
 
         Object[] nuevaColumna = {30, 25, 35}; // Nueva columna con datos para cada fila
@@ -63,20 +70,15 @@ public class App {
         tabla.head(2);
 
         List<Object> datosLineales2 = List.of(
-            "Carlos", 30, true,
-            "Pepe", 25, false,
-            "Alberto", 35, true
+            "Carlos", 32, true,
+            "Pepona", 12, false,
+            "Morena", 70, true
         );
+        // Crear y configurar tabla2
+        Tabla tabla2 = new Tabla("Tabla2", nombresColumnas,datosLineales2);
 
-        Tabla tabla2 = new Tabla("Empleados2", nombresColumnas, datosLineales2);
-
-        Object[] nuevaColumna2 = {30, 25, 35}; // Nueva columna con datos para cada fila
-        tabla2.agregarColumna("Edad",nuevaColumna2);
-
-        Tabla tablaConcatenada = new Tabla ("Tabla Concatenada",tabla,tabla2);
+        // Concatenar tablas y almacenar resultado
+        Tabla tablaConcatenada = new Tabla ("pepe", tabla, tabla2);
         tablaConcatenada.mostrarTabla();
-
-
-
     }
 }

@@ -429,4 +429,14 @@ class Tabla implements Manipulacion, Limpieza {
             columna.reemplazarNAs();
         }
     }
+
+    @Override
+    public void reemplazarNAs(String nombreColumna) {
+        for (Columna<?> columna : columnas) {
+
+            if (nombreColumna.equals(columna.getNombre())) {
+                columna.reemplazarNAs();
+            }
+        }
+    }
 }

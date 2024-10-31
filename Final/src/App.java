@@ -62,5 +62,16 @@ public class App {
 
         tabla.head(2);
 
+        List<Object> datosLineales2 = List.of(
+            "Carlos", 32, true,
+            "Pepona", 12, false,
+            "Morena", 70, true
+        );
+        // Crear y configurar tabla2
+        Tabla tabla2 = new Tabla("Tabla2", nombresColumnas,datosLineales2);
+
+        // Concatenar tablas y almacenar resultado
+        Tabla tablaConcatenada = new Tabla ("pepe", tabla, tabla2);
+        tablaConcatenada.mostrarTabla();
     }
 }

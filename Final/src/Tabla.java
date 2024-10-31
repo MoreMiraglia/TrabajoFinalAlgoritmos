@@ -90,6 +90,44 @@ class Tabla implements Manipulacion,Limpieza {
         setCantFilas();
     }
 
+    //Constructor que genera una tabla concatenada, dada dos tablas iguales
+    public Tabla(String nombre,Tabla tabla1, Tabla tabla2) {
+        // Verificar que las tablas tengan las mismas columnas (cantidad y nombres)
+        if (!sonColumnasCompatibles(tabla1, tabla2)) {
+            throw new IllegalArgumentException("Las tablas no tienen las mismas columnas o tipos de datos.");
+        }
+        
+        // Inicializar el nombre de la tabla concatenada
+        this.nombreTabla = nombre;
+        this.columnas = new ArrayList<>();
+        
+        // Copiar las columnas de la primera tabla (sin datos)
+        for (Columna<?> columna : tabla1.columnas) {
+            this.columnas.add(new Columna<>(columna.getNombre()));
+        }
+    
+        // Copiar filas de la primera tabla
+        for (int i = 0; i < tabla1.cantFilas; i++) {
+            List<Object> fila = new ArrayList<>();
+            for (Columna<?> columna : tabla1.columnas) {
+                fila.add(columna.getCeldas().get(i).getValor());
+            }
+            this.agregarFila(fila);
+        }
+        
+        // Copiar filas de la segunda tabla
+        for (int i = 0; i < tabla2.cantFilas; i++) {
+            List<Object> fila = new ArrayList<>();
+            for (Columna<?> columna : tabla2.columnas) {
+                fila.add(columna.getCeldas().get(i).getValor());
+            }
+            this.agregarFila(fila);
+        }
+        
+        this.cantColumnas = columnas.size();
+        setCantFilas();
+    }
+
     public void cargarDatosTabla(ArchivoCSV archivoCSV) {
         Map<String, List<Object>> datos = archivoCSV.getMap();
         for (Map.Entry<String, List<Object>> entry : datos.entrySet()) {
@@ -229,6 +267,38 @@ class Tabla implements Manipulacion,Limpieza {
 
         if (!hayNAs) {
             System.out.println("No hay valores NA en la tabla.");
+        }
+    }
+
+    // Método para verificar compatibilidad de columnas entre dos tablas
+    private boolean sonColumnasCompatibles(Tabla tabla1, Tabla tabla2) {
+        if (tabla1.cantColumnas != tabla2.cantColumnas) {
+            return false;
+        }
+
+        for (int i = 0; i < tabla1.cantColumnas; i++) {
+            Columna<?> columna1 = tabla1.columnas.get(i);
+            Columna<?> columna2 = tabla2.columnas.get(i);
+
+            // Verificar nombre y tipo de las columnas
+            if (!columna1.getNombre().equals(columna2.getNombre()) ||
+                !columna1.getCeldas().get(0).getValor().getClass().equals(columna2.getCeldas().get(0).getValor().getClass())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    // Método para copiar las columnas de una tabla
+    private void copiarColumnas(Tabla tabla) {
+        for (Columna<?> columna : tabla.columnas) {
+            Columna<Object> columnaCopiada = new Columna<>(columna.getNombre());
+
+            for (Celda<?> celda : columna.getCeldas()) {
+                columnaCopiada.addCelda(new Celda<>(celda.getValor(), columnaCopiada.getNombre(), columnaCopiada.getCeldas().size()));
+            }
+
+            this.columnas.add(columnaCopiada);
         }
     }
 

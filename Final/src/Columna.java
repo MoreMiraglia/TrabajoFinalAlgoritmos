@@ -33,11 +33,13 @@ class Columna<T> {
         return celdas;
     }
     
-    public void getTipoDeDato() {
+    public Class <?>getTipoDeDato() {
         if (!celdas.isEmpty() && celdas.get(0).getValor() != null) {
             System.out.println(nombre + " es: " + celdas.get(0).getValor().getClass().getSimpleName());
+            return celdas.get(0).getValor().getClass();
         } else {
             System.out.println("La columna " + nombre + " está vacía o contiene solo valores nulos.");
+            return null;
         }
     }
     

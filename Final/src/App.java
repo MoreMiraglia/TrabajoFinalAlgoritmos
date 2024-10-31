@@ -63,15 +63,20 @@ public class App {
         tabla.head(2);
 
         List<Object> datosLineales2 = List.of(
-            "Carlos", 32, true,
-            "Pepona", 12, false,
-            "Morena", 70, true
+            "Carlos", 30, true,
+            "Pepe", 25, false,
+            "Alberto", 35, true
         );
-        // Crear y configurar tabla2
-        Tabla tabla2 = new Tabla("Tabla2", nombresColumnas,datosLineales2);
 
-        // Concatenar tablas y almacenar resultado
-        Tabla tablaConcatenada = new Tabla ("pepe", tabla, tabla2);
+        Tabla tabla2 = new Tabla("Empleados2", nombresColumnas, datosLineales2);
+
+        Object[] nuevaColumna2 = {30, 25, 35}; // Nueva columna con datos para cada fila
+        tabla2.agregarColumna("Edad",nuevaColumna2);
+
+        Tabla tablaConcatenada = new Tabla ("Tabla Concatenada",tabla,tabla2);
         tablaConcatenada.mostrarTabla();
+
+
+
     }
 }

@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-class Tabla implements Manipulacion,Limpieza {
+class Tabla implements Manipulacion, Limpieza {
     private String nombreTabla;
     private List<Columna<?>> columnas;
     private int cantColumnas;
@@ -72,7 +72,6 @@ class Tabla implements Manipulacion,Limpieza {
         // Crear columnas a partir de los nombres
         for (String nombreColumna : nombresColumnas) {
             columnas.add(new Columna<>(nombreColumna));
-            
         }
 
         // Verificar que la cantidad de datos sea un múltiplo del número de columnas
@@ -91,8 +90,8 @@ class Tabla implements Manipulacion,Limpieza {
         setCantFilas();
     }
 
-    //Constructor que genera una tabla concatenada, dada dos tablas iguales (NO FUNCIONA BIEN TODAVIA)
-    public Tabla(String nombre, Tabla tabla1, Tabla tabla2) {
+    //Constructor que genera una tabla concatenada, dada dos tablas iguales
+    public Tabla(String nombre,Tabla tabla1, Tabla tabla2) {
         // Verificar que las tablas tengan las mismas columnas (cantidad y nombres)
         if (!sonColumnasCompatibles(tabla1, tabla2)) {
             throw new IllegalArgumentException("Las tablas no tienen las mismas columnas o tipos de datos.");
@@ -106,8 +105,6 @@ class Tabla implements Manipulacion,Limpieza {
         for (Columna<?> columna : tabla1.columnas) {
             this.columnas.add(new Columna<>(columna.getNombre()));
         }
-
-        this.cantColumnas = columnas.size();
     
         // Copiar filas de la primera tabla
         for (int i = 0; i < tabla1.cantFilas; i++) {
@@ -115,7 +112,7 @@ class Tabla implements Manipulacion,Limpieza {
             for (Columna<?> columna : tabla1.columnas) {
                 fila.add(columna.getCeldas().get(i).getValor());
             }
-            this.agregarFila(fila); // Aquí agregar fila llama a agregarFila() para cada fila de la primera tabla
+            this.agregarFila(fila);
         }
         
         // Copiar filas de la segunda tabla
@@ -124,15 +121,12 @@ class Tabla implements Manipulacion,Limpieza {
             for (Columna<?> columna : tabla2.columnas) {
                 fila.add(columna.getCeldas().get(i).getValor());
             }
-            this.agregarFila(fila); // Aquí agregar fila llama a agregarFila() para cada fila de la segunda tabla
+            this.agregarFila(fila);
         }
         
-        // Ajustar el conteo de columnas y filas en la tabla resultante
-
+        this.cantColumnas = columnas.size();
         setCantFilas();
     }
-    
-    
 
     public void cargarDatosTabla(ArchivoCSV archivoCSV) {
         Map<String, List<Object>> datos = archivoCSV.getMap();
@@ -278,16 +272,17 @@ class Tabla implements Manipulacion,Limpieza {
 
     // Método para verificar compatibilidad de columnas entre dos tablas
     private boolean sonColumnasCompatibles(Tabla tabla1, Tabla tabla2) {
-        if (tabla1.getColumnas() != tabla2.getColumnas()) {
+        if (tabla1.cantColumnas != tabla2.cantColumnas) {
             return false;
         }
 
-        for (int i = 0; i < tabla1.getColumnas(); i++) {
+        for (int i = 0; i < tabla1.cantColumnas; i++) {
             Columna<?> columna1 = tabla1.columnas.get(i);
             Columna<?> columna2 = tabla2.columnas.get(i);
 
             // Verificar nombre y tipo de las columnas
-            if (!columna1.getNombre().equals(columna2.getNombre()) || !columna1.getTipoDeDato().equals(columna2.getTipoDeDato())) {
+            if (!columna1.getNombre().equals(columna2.getNombre()) ||
+                !columna1.getCeldas().get(0).getValor().getClass().equals(columna2.getCeldas().get(0).getValor().getClass())) {
                 return false;
             }
         }
@@ -426,6 +421,12 @@ class Tabla implements Manipulacion,Limpieza {
     public void nombreColumnas(){
         for (Columna columna : columnas){
             System.out.println(columna.getNombre());
+        }
+    }
+    @Override
+    public void reemplazarNAs() {
+        for (Columna<?> columna : columnas) {
+            columna.reemplazarNAs();
         }
     }
 }

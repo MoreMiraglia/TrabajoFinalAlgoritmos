@@ -254,7 +254,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
 
     // Método para verificar compatibilidad de columnas entre dos tablas
     private boolean sonColumnasCompatibles(Tabla tabla1, Tabla tabla2) {
-        if (tabla1.getColumnas() != tabla2.getColumnas()) {
+        if (tabla1.cantColumnas != tabla2.cantColumnas) {
             return false;
         }
 
@@ -271,7 +271,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         return true;
     }
     private void copiarFilas(Tabla tabla){
-        for (int i = 0; i < tabla.getFilas(); i++) {
+        for (int i = 0; i < tabla.cantFilas; i++) {
             List<Object> fila = new ArrayList<>();
             for (Columna<?> columna : tabla.columnas) {
                 fila.add(columna.getCeldas().get(i).getValor());

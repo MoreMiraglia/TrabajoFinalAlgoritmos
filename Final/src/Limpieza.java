@@ -5,4 +5,6 @@ public interface Limpieza {
     List<Celda<Object>> leerNAs();  // Método para devolver las celdas con NA
     public abstract void reemplazarNAs();
     public abstract void reemplazarNAs(String nombreColumna);
+    void eliminarFilasConNAs();  // Nuevo método
+    void eliminarFilasConNAs(String nombreColumna);
 }

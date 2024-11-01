@@ -251,6 +251,57 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
             System.out.println("No hay valores NA en la tabla.");
         }
     }
+    @Override
+    public void eliminarFilasConNAs() {
+        if (columnas.isEmpty()) return;
+
+        // Suponiendo que todas las columnas tienen la misma cantidad de filas
+        List<Integer> filasAEliminar = new ArrayList<>();
+
+        // Identificar las filas con al menos un NA en alguna columna
+        for (int i = 0; i < cantFilas; i++) {
+            for (Columna<?> columna : columnas) {
+                if (columna.getCeldas().get(i).getValor() == null) {
+                    filasAEliminar.add(i);
+                    break;
+                }
+            }
+        }
+
+        // Eliminar las filas con NA en todas las columnas
+        for (int i = filasAEliminar.size() - 1; i >= 0; i--) {
+            int fila = filasAEliminar.get(i);
+            for (Columna<?> columna : columnas) {
+                columna.eliminarFila(fila);
+            }
+        }
+    }
+
+    @Override
+    public void eliminarFilasConNAs(String nombreColumna) {
+        if (columnas.isEmpty()) return;
+
+        // Suponiendo que todas las columnas tienen la misma cantidad de filas
+        List<Integer> filasAEliminar = new ArrayList<>();
+
+        // Identificar las filas con al menos un NA en alguna columna
+        for (int i = 0; i < cantFilas; i++) {
+            for (Columna<?> columna : columnas) {
+                if (columna.getCeldas().get(i).getValor() == null) {
+                    filasAEliminar.add(i);
+                    break;
+                }
+            }
+        }
+
+        // Eliminar las filas con NA en todas las columnas
+        for (int i = filasAEliminar.size() - 1; i >= 0; i--) {
+            int fila = filasAEliminar.get(i);
+            for (Columna<?> columna : columnas) {
+                columna.eliminarFila(fila);
+            }
+        }
+    }
 
     // Método para verificar compatibilidad de columnas entre dos tablas
     private boolean sonColumnasCompatibles(Tabla tabla1, Tabla tabla2) {
@@ -351,7 +402,9 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         }
         return anchos;
     }
+    public List<Celda<?>> devolverFila(int indice){
 
+    }
     private void mostrarColumnas() {
         List<Integer> anchos = calcularAnchoColumnas();
         for (int i = 0; i < cantColumnas; i++) {

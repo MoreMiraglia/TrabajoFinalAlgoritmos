@@ -105,6 +105,8 @@ class Tabla implements Manipulacion, Limpieza {
         for (Columna<?> columna : tabla1.columnas) {
             this.columnas.add(new Columna<>(columna.getNombre()));
         }
+        
+        this.cantColumnas = columnas.size();
     
         // Copiar filas de la primera tabla
         for (int i = 0; i < tabla1.cantFilas; i++) {
@@ -123,8 +125,7 @@ class Tabla implements Manipulacion, Limpieza {
             }
             this.agregarFila(fila);
         }
-        
-        this.cantColumnas = columnas.size();
+    
         setCantFilas();
     }
 
@@ -272,7 +273,7 @@ class Tabla implements Manipulacion, Limpieza {
 
     // Método para verificar compatibilidad de columnas entre dos tablas
     private boolean sonColumnasCompatibles(Tabla tabla1, Tabla tabla2) {
-        if (tabla1.cantColumnas != tabla2.cantColumnas) {
+        if (tabla1.getColumnas() != tabla2.getColumnas()) {
             return false;
         }
 
@@ -281,8 +282,7 @@ class Tabla implements Manipulacion, Limpieza {
             Columna<?> columna2 = tabla2.columnas.get(i);
 
             // Verificar nombre y tipo de las columnas
-            if (!columna1.getNombre().equals(columna2.getNombre()) ||
-                !columna1.getCeldas().get(0).getValor().getClass().equals(columna2.getCeldas().get(0).getValor().getClass())) {
+            if (!columna1.getNombre().equals(columna2.getNombre()) || !columna1.getTipoDeDato().equals(columna2.getTipoDeDato())) {
                 return false;
             }
         }

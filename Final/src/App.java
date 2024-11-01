@@ -2,13 +2,6 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Tabla nuevaTabla = new Tabla("MiTabla","/home/laura/Escritorio/Algo1/TrabajoFinalAlgoritmos/Final/src/prueba1.csv");
-        System.out.println("Tabla generada desde Archivo csv:");
-        nuevaTabla.mostrarTabla();
-        Tabla copiaTabla = new Tabla(nuevaTabla);
-        System.out.println("Tabla generada desde Copia Profunda:");
-        copiaTabla.mostrarTabla();
-
         Object[][] datosMatriz = {
             {"Nombre", "Edad", "Ciudad","Activo"}, // Primera fila con nombres de columnas
             {"Alice", 30, "Nueva York",true},
@@ -76,6 +69,8 @@ public class App {
         );
         // Crear y configurar tabla2
         Tabla tabla2 = new Tabla("Tabla2", nombresColumnas,datosLineales2);
+        Object[] nuevaColumna2 = {30, 25, 35}; // Nueva columna con datos para cada fila
+        tabla2.agregarColumna("Edad",nuevaColumna2);
 
         // Concatenar tablas y almacenar resultado
         Tabla tablaConcatenada = new Tabla ("pepe", tabla, tabla2);

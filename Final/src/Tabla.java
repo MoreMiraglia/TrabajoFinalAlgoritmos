@@ -105,27 +105,15 @@ class Tabla implements Manipulacion, Limpieza {
         for (Columna<?> columna : tabla1.columnas) {
             this.columnas.add(new Columna<>(columna.getNombre()));
         }
-        
+
         this.cantColumnas = columnas.size();
     
         // Copiar filas de la primera tabla
-        for (int i = 0; i < tabla1.cantFilas; i++) {
-            List<Object> fila = new ArrayList<>();
-            for (Columna<?> columna : tabla1.columnas) {
-                fila.add(columna.getCeldas().get(i).getValor());
-            }
-            this.agregarFila(fila);
-        }
-        
+        copiarFilas(tabla1);
         // Copiar filas de la segunda tabla
-        for (int i = 0; i < tabla2.cantFilas; i++) {
-            List<Object> fila = new ArrayList<>();
-            for (Columna<?> columna : tabla2.columnas) {
-                fila.add(columna.getCeldas().get(i).getValor());
-            }
-            this.agregarFila(fila);
-        }
-    
+        copiarFilas(tabla2);
+        
+        //Actulizar cantidad de filas
         setCantFilas();
     }
 
@@ -289,8 +277,18 @@ class Tabla implements Manipulacion, Limpieza {
 
         return true;
     }
+    private void copiarFilas(Tabla tabla){
+        for (int i = 0; i < tabla.getFilas(); i++) {
+            List<Object> fila = new ArrayList<>();
+            for (Columna<?> columna : tabla.columnas) {
+                fila.add(columna.getCeldas().get(i).getValor());
+            }
+            this.agregarFila(fila);
+        }
+    }
+
     // Método para copiar las columnas de una tabla
-    private void copiarColumnas(Tabla tabla) {
+    private void copiarColumnasRevisar(Tabla tabla) {
         for (Columna<?> columna : tabla.columnas) {
             Columna<Object> columnaCopiada = new Columna<>(columna.getNombre());
 

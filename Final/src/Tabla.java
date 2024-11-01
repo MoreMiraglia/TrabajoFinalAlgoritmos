@@ -403,7 +403,15 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         return anchos;
     }
     public List<Celda<?>> devolverFila(int indice){
-
+        List<Celda<?>> fila = new ArrayList<>();
+        for (Columna<?> columna : columnas) {
+            for (Celda<?> celda : columna.getCeldas()) {
+                if (celda.getIndice() == indice) {
+                    fila.add((Celda<Object>) celda);
+                }
+            }
+        }
+        return fila;
     }
     private void mostrarColumnas() {
         List<Integer> anchos = calcularAnchoColumnas();

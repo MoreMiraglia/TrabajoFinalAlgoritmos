@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class App {
@@ -76,6 +77,7 @@ public class App {
         Tabla tablaConcatenada = new Tabla ("pepe", tabla, tabla2);
         //tablaConcatenada.mostrarTabla();
 
-        tablaConcatenada.mostrarFila(5);
-    }
+        List<Celda<?>> fila2 = tablaConcatenada.devolverFila(4);
+        System.out.println(fila2);
+}
 }

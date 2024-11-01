@@ -96,23 +96,20 @@ class Tabla implements Manipulacion, Limpieza {
         if (!sonColumnasCompatibles(tabla1, tabla2)) {
             throw new IllegalArgumentException("Las tablas no tienen las mismas columnas o tipos de datos.");
         }
-        
+    
         // Inicializar el nombre de la tabla concatenada
         this.nombreTabla = nombre;
         this.columnas = new ArrayList<>();
-        
         // Copiar las columnas de la primera tabla (sin datos)
         for (Columna<?> columna : tabla1.columnas) {
             this.columnas.add(new Columna<>(columna.getNombre()));
         }
-
+        //Actualizar cantidad de colunas
         this.cantColumnas = columnas.size();
-    
         // Copiar filas de la primera tabla
         copiarFilas(tabla1);
         // Copiar filas de la segunda tabla
         copiarFilas(tabla2);
-        
         //Actulizar cantidad de filas
         setCantFilas();
     }
@@ -328,7 +325,7 @@ class Tabla implements Manipulacion, Limpieza {
         return anchos;
     }
 
-    public void mostrarColumnas() {
+    private void mostrarColumnas() {
         List<Integer> anchos = calcularAnchoColumnas();
         for (int i = 0; i < cantColumnas; i++) {
             System.out.printf("%-" + anchos.get(i) + "s | ", columnas.get(i).getNombre());
@@ -380,7 +377,7 @@ class Tabla implements Manipulacion, Limpieza {
     }
 
 
-    public void mostrarDatos() {
+    private void mostrarDatos() {
         List<Integer> anchos = calcularAnchoColumnas();
         for (int i = 0; i < cantFilas; i++) {
             for (int j = 0; j < cantColumnas; j++) {
@@ -401,6 +398,10 @@ class Tabla implements Manipulacion, Limpieza {
         }
     }
 
+    public void mostrarFila(int indice){
+        mostrarColumnas();
+        mostrarDatos(indice, indice+1);
+    }
     public void mostrarTabla() {
         mostrarColumnas();
         mostrarDatos();

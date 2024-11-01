@@ -74,6 +74,8 @@ public class App {
 
         // Concatenar tablas y almacenar resultado
         Tabla tablaConcatenada = new Tabla ("pepe", tabla, tabla2);
-        tablaConcatenada.mostrarTabla();
+        //tablaConcatenada.mostrarTabla();
+
+        tablaConcatenada.mostrarFila(5);
     }
 }

@@ -1,12 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-//prueba
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 
-class Tabla implements Manipulacion, Limpieza {
+class Tabla implements Manipulacion, Limpieza, Filtro{
     private String nombreTabla;
     private List<Columna<?>> columnas;
     private int cantColumnas;
@@ -296,7 +292,38 @@ class Tabla implements Manipulacion, Limpieza {
             this.columnas.add(columnaCopiada);
         }
     }
+    @Override
+    public List<Celda<?>> filtrarPorColumna(String nombreColumna, Object valor) {
+        List<Celda<?>> resultado = new ArrayList<>();
+        for (Columna<?> columna : columnas) {
+            if (columna.getNombre().equals(nombreColumna)) {
+                for (Celda<?> celda : columna.getCeldas()) {
+                    if (celda.getValor() != null && celda.getValor().equals(valor)) {
+                        resultado.add(celda);
+                    }
+                }
+                break;
+            }
+        }
+        return resultado;
+    }
 
+    @Override
+    public List<Integer> buscarValor(String nombreColumna, Object valor) {
+        List<Integer> indices = new ArrayList<>();
+        for (Columna<?> columna : columnas) {
+            if (columna.getNombre().equals(nombreColumna)) {
+                for (int i = 0; i < columna.getCeldas().size(); i++) {
+                    Celda<?> celda = columna.getCeldas().get(i);
+                    if (celda.getValor() != null && celda.getValor().equals(valor)) {
+                        indices.add(i);
+                    }
+                }
+                break;
+            }
+        }
+        return indices;
+    }
     @Override
     public List<Celda<Object>> leerNAs() {
         List<Celda<Object>> celdasNA = new ArrayList<>();

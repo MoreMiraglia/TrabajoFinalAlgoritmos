@@ -48,6 +48,11 @@ public class App {
         tablaDesdeMatriz.reemplazarNAs();
         tablaDesdeMatriz.mostrarTabla();
 
+        //Implementacion de filtro por columna 
+        System.out.println("Filtrado por columna");
+        Tabla tablaFiltrada = tablaDesdeMatriz.filtrarPorColumna("Ciudad", "Nueva York");
+        tablaFiltrada.mostrarTabla();
+
 
         // ------------------------------------------------------------------------------------------------
 

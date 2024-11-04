@@ -343,20 +343,46 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
             this.columnas.add(columnaCopiada);
         }
     }
+
+    // Método para filtrar por columna
     @Override
-    public List<Celda<?>> filtrarPorColumna(String nombreColumna, Object valor) {
-        List<Celda<?>> resultado = new ArrayList<>();
+    public Tabla filtrarPorColumna(String nombreColumna, Object valor) {
+    // Crear una nueva tabla para almacenar los resultados filtrados
+    Tabla tablaFiltrada = new Tabla("Tabla Filtrada", obtenerNombresColumnas());
+
+    // Iterar sobre cada fila
+    for (int i = 0; i < cantFilas; i++) {
+        Object valorFila = null;
+
+        // Encontrar la columna especificada
         for (Columna<?> columna : columnas) {
             if (columna.getNombre().equals(nombreColumna)) {
-                for (Celda<?> celda : columna.getCeldas()) {
-                    if (celda.getValor() != null && celda.getValor().equals(valor)) {
-                        resultado.add(celda);
-                    }
-                }
+                // Obtener el valor de la celda en la fila actual
+                valorFila = columna.getCeldas().get(i).getValor();
                 break;
             }
         }
-        return resultado;
+
+        // Si el valor de la celda no es nulo y coincide con el valor dado, agregar la fila a la nueva tabla
+        if (valorFila != null && valorFila.equals(valor)) {
+            List<Object> valoresFila = new ArrayList<>();
+            for (Columna<?> columna : columnas) {
+                valoresFila.add(columna.getCeldas().get(i).getValor());
+            }
+            tablaFiltrada.agregarFila(valoresFila);
+        }
+    }
+
+    return tablaFiltrada;
+
+}
+     // Método para obtener los nombres de las columnas
+    private List<String> obtenerNombresColumnas() {
+        List<String> nombres = new ArrayList<>();
+        for (Columna<?> columna : columnas) {
+            nombres.add(columna.getNombre());
+        }
+        return nombres;
     }
 
     @Override

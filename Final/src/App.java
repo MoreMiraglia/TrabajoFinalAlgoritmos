@@ -8,7 +8,7 @@ public class App {
             {"Alice", 30, "Nueva York",true},
             {"Bob", 25, null,false},
             {"Charlie", 35, "Chicago",false},
-            {"tumama", null, "dondevivetumama", null}
+            {"tumama", null, "dondevivetumama", null},
         };
 
 
@@ -53,6 +53,10 @@ public class App {
         Tabla tablaFiltrada = tablaDesdeMatriz.filtrarPorColumna("Ciudad", "Nueva York");
         tablaFiltrada.mostrarTabla();
 
+         // Implementacion de búsqueda por valor
+         System.out.println("Búsqueda por valor en la columna 'Edad':");
+         Tabla tablaBusqueda = tablaDesdeMatriz.buscarValor("Edad", 25);
+         tablaBusqueda.mostrarTabla();
 
         // ------------------------------------------------------------------------------------------------
 

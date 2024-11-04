@@ -384,23 +384,39 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         }
         return nombres;
     }
+    //Metodo para buscar por valor 
 
     @Override
-    public List<Integer> buscarValor(String nombreColumna, Object valor) {
-        List<Integer> indices = new ArrayList<>();
+    public Tabla buscarValor(String nombreColumna, Object valor) {
+    // Crear una nueva tabla para almacenar los resultados encontrados
+    Tabla tablaResultado = new Tabla("Resultados de Búsqueda", obtenerNombresColumnas());
+
+    // Iterar sobre cada fila
+    for (int i = 0; i < cantFilas; i++) {
+        Object valorFila = null;
+
+        // Encontrar la columna especificada
         for (Columna<?> columna : columnas) {
             if (columna.getNombre().equals(nombreColumna)) {
-                for (int i = 0; i < columna.getCeldas().size(); i++) {
-                    Celda<?> celda = columna.getCeldas().get(i);
-                    if (celda.getValor() != null && celda.getValor().equals(valor)) {
-                        indices.add(i);
-                    }
-                }
+                // Obtener el valor de la celda en la fila actual
+                valorFila = columna.getCeldas().get(i).getValor();
                 break;
             }
         }
-        return indices;
+
+        // Si el valor de la celda no es nulo y coincide con el valor dado, agregar la fila a la nueva tabla
+        if (valorFila != null && valorFila.equals(valor)) {
+            List<Object> valoresFila = new ArrayList<>();
+            for (Columna<?> columna : columnas) {
+                valoresFila.add(columna.getCeldas().get(i).getValor());
+            }
+            tablaResultado.agregarFila(valoresFila);
+        }
     }
+
+    return tablaResultado;
+}
+
     @Override
     public List<Celda<Object>> leerNAs() {
         List<Celda<Object>> celdasNA = new ArrayList<>();

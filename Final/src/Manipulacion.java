@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface Manipulacion {
-    public abstract void reasignarValor(String nombre,int indice, Object nuevoValor);
+    public abstract Tabla reasignarValor(String nombre,int indice, Object nuevoValor);
 
     public abstract void agregarColumna(Columna nuevaColumna);
 

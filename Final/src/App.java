@@ -23,6 +23,8 @@ public class App {
         tablaDesdeMatriz.mostrarTabla();
         tablaDesdeMatriz.mostrarFila(1);
 
+        
+
         List<String> nombresColumnas = List.of("Nombre", "Edad", "Activo");
 
         // Datos de los empleados en una secuencia lineal

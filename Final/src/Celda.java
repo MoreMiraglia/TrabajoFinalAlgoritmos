@@ -8,7 +8,9 @@ class Celda<T> {
         this.nombreColumna = nombreColumna;
         this.indice= indice;
     }
-
+    public String getNombreColumna(){
+        return nombreColumna;
+    }
     public T getValor() {
         return valor;
     }

@@ -42,7 +42,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         for (int i = 0; i < datos[0].length; i++) {
             List<Celda<Object>> celdas = new ArrayList<>();
             for (int j = 1; j < datos.length; j++) { // Empezamos en la segunda fila para obtener datos
-                celdas.add(new Celda<>(datos[j][i],datos[0][i].toString(),celdas.size()-1));
+                celdas.add(new Celda<>(datos[j][i],datos[0][i].toString(),celdas.size()));
             }
             columnas.add(new Columna<>(datos[0][i].toString(), celdas));
         }
@@ -116,7 +116,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         for (Map.Entry<String, List<Object>> entry : datos.entrySet()) {
             List<Celda<Object>> celdas = new ArrayList<>();
             for (Object valor : entry.getValue()) {
-                celdas.add(new Celda<>(valor,entry.getKey(),celdas.size()-1));
+                celdas.add(new Celda<>(valor,entry.getKey(),celdas.size()));
             }
             Columna<Object> nuevaColumna = new Columna<>(entry.getKey(), celdas);
             columnas.add(nuevaColumna);
@@ -175,11 +175,12 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         setCantFilas();
     }
 
-    public void eliminarColumna(String nombreColumna) {
+    public Tabla eliminarColumna(String nombreColumna) {
+        Tabla nuevaTabla = new Tabla(this);
         Columna<?> columnaAEliminar = null;
     
         // Buscar la columna con el nombre especificado
-        for (Columna<?> columna : columnas) {
+        for (Columna<?> columna : nuevaTabla.columnas) {
             if (columna.getNombre().equals(nombreColumna)) {
                 columnaAEliminar = columna;
                 break;
@@ -188,25 +189,28 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     
         // Si se encuentra la columna, eliminarla de la lista de columnas
         if (columnaAEliminar != null) {
-            columnas.remove(columnaAEliminar);
-            cantColumnas = columnas.size(); // Actualizar la cantidad de columnas
+            nuevaTabla.columnas.remove(columnaAEliminar);
+            cantColumnas = nuevaTabla.columnas.size(); // Actualizar la cantidad de columnas
         } else {
             System.out.println("La columna '" + nombreColumna + "' no existe en la tabla.");
         }
+        return nuevaTabla;
     }
 
-    public void eliminarFila(int indiceFila) {
+    public Tabla eliminarFila(int indiceFila) {
+        Tabla nuevaTabla = new Tabla (this);
         // Verificar si el índice de la fila es válido
-        if (indiceFila < 0 || indiceFila >= cantFilas) {
+        if (indiceFila < 0 || indiceFila >= nuevaTabla.cantFilas) {
             throw new IndexOutOfBoundsException("Índice de fila fuera de rango.");
         }
     
         // Eliminar la celda correspondiente en cada columna
-        for (Columna<?> columna : columnas) {
+        for (Columna<?> columna : nuevaTabla.columnas) {
             columna.eliminarFila(indiceFila);
         }
-        actualizarIndices(indiceFila);
-        cantFilas--; // Actualizar la cantidad de filas
+        nuevaTabla.actualizarIndices(indiceFila);
+        nuevaTabla.cantFilas--; // Actualizar la cantidad de filas
+        return nuevaTabla;
     }
 
     private void actualizarIndices(int indiceEliminado){
@@ -233,78 +237,64 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     
 
     @Override
-    public void reasignarValor(String nombre,int indice, Object nuevoValor){
-        for (Columna columna : columnas){
+    public Tabla reasignarValor(String nombre,int indice, Object nuevoValor){
+        Tabla nuevaTabla = new Tabla(this);
+        for (Columna columna : nuevaTabla.columnas){
             if (columna.getNombre().equals(nombre)){
                 columna.modificarValor(indice, nuevoValor);
             }
         }
+        return nuevaTabla;
     }
 
     @Override
     public void mostrarNAs() {
         System.out.println("Celdas con NA en la tabla: " + nombreTabla);
-        boolean hayNAs = false;
-
-        for (Columna<?> columna : columnas) {
-            for (Celda<?> celda : columna.getCeldas()) {
-                if (celda.getValor() == null) {
-                    System.out.println("Columna: " + columna.getNombre() + " Fila n°" + celda.getIndice() +  " - Valor: null");
-                    hayNAs = true;
-                }
-            }
-        }
-
-        if (!hayNAs) {
+        List <Celda<Object>> hayNAs = leerNAs();
+        if (hayNAs.isEmpty()) {
             System.out.println("No hay valores NA en la tabla.");
+            return;
+        }
+        for (Celda celda:hayNAs){
+            System.out.println("Columna:"+ celda.getNombreColumna() + "Fila n°" + celda.getIndice() +  " - Valor: null");
         }
     }
-    public void eliminarFilasConNAs() {
-        List<Integer> filasConNA = new ArrayList<>();
 
-        // Recorrer las columnas y marcar las filas que contienen NAs
-        for (Columna<?> columna : columnas) {
-            for (int i = 0; i < columna.getCeldas().size(); i++) {
-                Celda<?> celda = columna.getCeldas().get(i);
-                if (celda.getValor() == null && !filasConNA.contains(i)) {
-                    filasConNA.add(i);
-                }
-            }
+    public Tabla eliminarFilasConNAs() {
+        Tabla nuevaTabla = new Tabla(this);
+        List <Celda<Object>> celdasNAs = leerNAs();
+        if (celdasNAs.isEmpty()) {
+            System.out.println("No hay valores NA en la tabla.");
+            return null;
         }
-
-        // Ordenar los índices en orden descendente para evitar problemas de desplazamiento al eliminar
-        filasConNA.sort(Collections.reverseOrder());
-
-        // Eliminar filas marcadas con NA en todas las columnas
-        for (int indiceFila : filasConNA) {
-            eliminarFila(indiceFila);
+        for (Celda celda:celdasNAs){
+            nuevaTabla.eliminarFila(celda.getIndice());
         }
-
-        System.out.println("Se eliminaron " + filasConNA.size() + " filas con valores NA.");
+        System.out.println("Se eliminaron " + celdasNAs.size() + " filas con valores NA.");
+        return nuevaTabla;
     }
 
     @Override
-    public void eliminarFilasConNAs(String nombreColumna) {
-        if (columnas.isEmpty()) return;
-
-        // Suponiendo que todas las columnas tienen la misma cantidad de filas
-        List<Integer> filasAEliminar = new ArrayList<>();
-
-        // Identificar las filas con al menos un NA en alguna columna
-        for (int i = 0; i < cantFilas; i++) {
-            for (Columna<?> columna : columnas) {
-                if (columna.getCeldas().get(i).getValor() == null) {
-                    filasAEliminar.add(i);
-                    break;
-                }
+    public Tabla eliminarFilasConNAs(String nombreColumna) {
+        Tabla nuevaTabla = new Tabla(this);
+        int cantEliminadas = 0;
+        List <Celda<Object>> celdasNAs = leerNAs();
+        if (celdasNAs.isEmpty()) {
+            System.out.println("No hay valores NA en la columna" + nombreColumna);
+            return null;
+        }
+        for (Celda celda:celdasNAs){
+            if (celda.getNombreColumna().equals(nombreColumna)){
+                nuevaTabla.eliminarFila(celda.getIndice());
+                cantEliminadas++;
             }
         }
-
-        // Eliminar las filas con NA en todas las columnas
-        for (int i = filasAEliminar.size() - 1; i >= 0; i--) {
-            int fila = filasAEliminar.get(i);
-            eliminarFila(fila);
+        if (cantEliminadas == 0) {
+            System.out.println("No hay valores NA en la columna" + nombreColumna);
+            return null;
         }
+        System.out.println("Se eliminaron " + cantEliminadas + " filas con valores NA de la columna" + nombreColumna);
+        return nuevaTabla;
     }
 
     // Método para verificar compatibilidad de columnas entre dos tablas
@@ -332,19 +322,6 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
                 fila.add(columna.getCeldas().get(i).getValor());
             }
             this.agregarFila(fila);
-        }
-    }
-
-    // Método para copiar las columnas de una tabla
-    private void copiarColumnasRevisar(Tabla tabla) {
-        for (Columna<?> columna : tabla.columnas) {
-            Columna<Object> columnaCopiada = new Columna<>(columna.getNombre());
-
-            for (Celda<?> celda : columna.getCeldas()) {
-                columnaCopiada.addCelda(new Celda<>(celda.getValor(), columnaCopiada.getNombre(), columnaCopiada.getCeldas().size()));
-            }
-
-            this.columnas.add(columnaCopiada);
         }
     }
 
@@ -419,9 +396,9 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     }
 
     return tablaResultado;
-}
+    }
 
-    @Override
+    @Override 
     public List<Celda<Object>> leerNAs() {
         List<Celda<Object>> celdasNA = new ArrayList<>();
 
@@ -557,19 +534,23 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         }
     }
     @Override
-    public void reemplazarNAs() {
-        for (Columna<?> columna : columnas) {
+    public Tabla reemplazarNAs() {
+        Tabla tablaNueva = new Tabla(this);
+        for (Columna<?> columna : tablaNueva.columnas) {
             columna.reemplazarNAs();
         }
+        return tablaNueva;
     }
 
     @Override
-    public void reemplazarNAs(String nombreColumna) {
-        for (Columna<?> columna : columnas) {
+    public Tabla reemplazarNAs(String nombreColumna) {
+        Tabla tablaNueva = new Tabla(this);
+        for (Columna<?> columna : tablaNueva.columnas) {
 
             if (nombreColumna.equals(columna.getNombre())) {
                 columna.reemplazarNAs();
             }
         }
+        return tablaNueva;
     }
 }

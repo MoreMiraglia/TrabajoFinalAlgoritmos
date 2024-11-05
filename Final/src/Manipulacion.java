@@ -10,8 +10,8 @@ public interface Manipulacion {
 
     public abstract void agregarFila (List<Object> valores);
 
-    public abstract void eliminarColumna(String nombreColumna);
+    public abstract Tabla eliminarColumna(String nombreColumna);
 
-    public abstract void eliminarFila(int indiceFila);
+    public abstract Tabla eliminarFila(int indiceFila);
 
 }

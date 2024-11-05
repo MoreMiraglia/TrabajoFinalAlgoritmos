@@ -8,14 +8,19 @@ public class App {
             {"Alice", 30, "Nueva York",true},
             {"Bob", 25, null,false},
             {"Charlie", 35, "Chicago",false},
-            {"tumama", null, "dondevivetumama", null},
+            {"tumama", null, "dondevivetumama", null}
         };
 
 
         // Crear tabla desde Object[][]
         Tabla tablaDesdeMatriz = new Tabla("TablaMatriz", datosMatriz);
+
         
         System.out.println("Tabla generada desde Object[][]:");
+        tablaDesdeMatriz.mostrarTabla();
+
+        System.out.println("------------------------MIRA ACA -----------------------------");
+        tablaDesdeMatriz.eliminarFilasConNAs();
         tablaDesdeMatriz.mostrarTabla();
 
         List<String> nombresColumnas = List.of("Nombre", "Edad", "Activo");
@@ -23,7 +28,7 @@ public class App {
         // Datos de los empleados en una secuencia lineal
         List<Object> datosLineales = List.of(
             "Ana", 30, true,
-            "Luis", 25, false,
+            "Luis", 25, null,
             "Maria", 35, true
         );
 
@@ -36,6 +41,7 @@ public class App {
         System.out.println("Tabla generada desde Object[][]:");
         tablaDesdeMatriz.mostrarTabla();
 
+
         // Implementacion de Limpieza --------------------------------------------------------------
         // Detectar y mostrar las celdas con NA usando la interfaz Limpieza
         System.out.println("\nDetectando valores NA...");
@@ -45,18 +51,10 @@ public class App {
         List<Celda<Object>> celdasNA = tablaDesdeMatriz.leerNAs();
         System.out.println("\nNúmero de celdas con NA: " + celdasNA.size());
 
-        tablaDesdeMatriz.reemplazarNAs();
+        tablaDesdeMatriz.eliminarFilasConNAs();;
+        System.out.println("Elimino los NA'S");
         tablaDesdeMatriz.mostrarTabla();
 
-        //Implementacion de filtro por columna 
-        System.out.println("Filtrado por columna");
-        Tabla tablaFiltrada = tablaDesdeMatriz.filtrarPorColumna("Ciudad", "Nueva York");
-        tablaFiltrada.mostrarTabla();
-
-         // Implementacion de búsqueda por valor
-         System.out.println("Búsqueda por valor en la columna 'Edad':");
-         Tabla tablaBusqueda = tablaDesdeMatriz.buscarValor("Edad", 25);
-         tablaBusqueda.mostrarTabla();
 
         // ------------------------------------------------------------------------------------------------
 
@@ -75,7 +73,7 @@ public class App {
         List<Object> datosLineales2 = List.of(
             "Carlos", 32, true,
             "Pepona", 12, false,
-            "Morena", 70, true
+            "Morena", 23, true
         );
         // Crear y configurar tabla2
         Tabla tabla2 = new Tabla("Tabla2", nombresColumnas,datosLineales2);
@@ -88,5 +86,10 @@ public class App {
 
         List<Celda<?>> fila2 = tablaConcatenada.devolverFila(4);
         System.out.println(fila2);
-}
+
+
+
+    }
+
+
 }

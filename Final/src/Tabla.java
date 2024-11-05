@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -251,30 +252,30 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
             System.out.println("No hay valores NA en la tabla.");
         }
     }
-    @Override
     public void eliminarFilasConNAs() {
-        if (columnas.isEmpty()) return;
+        List<Integer> filasConNA = new ArrayList<>();
 
-        // Suponiendo que todas las columnas tienen la misma cantidad de filas
-        List<Integer> filasAEliminar = new ArrayList<>();
-
-        // Identificar las filas con al menos un NA en alguna columna
-        for (int i = 0; i < cantFilas; i++) {
-            for (Columna<?> columna : columnas) {
-                if (columna.getCeldas().get(i).getValor() == null) {
-                    filasAEliminar.add(i);
-                    break;
+        // Recorrer las columnas y marcar las filas que contienen NAs
+        for (Columna<?> columna : columnas) {
+            for (int i = 0; i < columna.getCeldas().size(); i++) {
+                Celda<?> celda = columna.getCeldas().get(i);
+                if (celda.getValor() == null && !filasConNA.contains(i)) {
+                    filasConNA.add(i);
                 }
             }
         }
 
-        // Eliminar las filas con NA en todas las columnas
-        for (int i = filasAEliminar.size() - 1; i >= 0; i--) {
-            int fila = filasAEliminar.get(i);
+        // Ordenar los índices en orden descendente para evitar problemas de desplazamiento al eliminar
+        filasConNA.sort(Collections.reverseOrder());
+
+        // Eliminar filas marcadas con NA en todas las columnas
+        for (int indiceFila : filasConNA) {
             for (Columna<?> columna : columnas) {
-                columna.eliminarFila(fila);
+                columna.eliminarFila(indiceFila);
             }
         }
+
+        System.out.println("Se eliminaron " + filasConNA.size() + " filas con valores NA.");
     }
 
     @Override

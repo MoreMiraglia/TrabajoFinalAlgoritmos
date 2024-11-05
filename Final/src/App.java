@@ -18,17 +18,17 @@ public class App {
         
         System.out.println("Tabla generada desde Object[][]:");
         tablaDesdeMatriz.mostrarTabla();
-
         System.out.println("------------------------MIRA ACA -----------------------------");
         tablaDesdeMatriz.eliminarFilasConNAs();
         tablaDesdeMatriz.mostrarTabla();
+        tablaDesdeMatriz.mostrarFila(1);
 
         List<String> nombresColumnas = List.of("Nombre", "Edad", "Activo");
 
         // Datos de los empleados en una secuencia lineal
         List<Object> datosLineales = List.of(
             "Ana", 30, true,
-            "Luis", 25, null,
+            "Luis", 25, false,
             "Maria", 35, true
         );
 

@@ -20,6 +20,9 @@ class Celda<T> {
     public int getIndice() {
         return indice;
     }
+    public void setIndice(int indiceNuevo){
+        this.indice=indiceNuevo;
+    }
 
     @Override
     public String toString() {

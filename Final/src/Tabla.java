@@ -205,7 +205,14 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         for (Columna<?> columna : columnas) {
             columna.eliminarFila(indiceFila);
         }
+        actualizarIndices(indiceFila);
         cantFilas--; // Actualizar la cantidad de filas
+    }
+
+    private void actualizarIndices(int indiceEliminado){
+        for (Columna columna: columnas){
+            columna.actualizarIndices(indiceEliminado);
+        }
     }
 
     public void getTipoDato(){
@@ -270,9 +277,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
 
         // Eliminar filas marcadas con NA en todas las columnas
         for (int indiceFila : filasConNA) {
-            for (Columna<?> columna : columnas) {
-                columna.eliminarFila(indiceFila);
-            }
+            eliminarFila(indiceFila);
         }
 
         System.out.println("Se eliminaron " + filasConNA.size() + " filas con valores NA.");
@@ -298,9 +303,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         // Eliminar las filas con NA en todas las columnas
         for (int i = filasAEliminar.size() - 1; i >= 0; i--) {
             int fila = filasAEliminar.get(i);
-            for (Columna<?> columna : columnas) {
-                columna.eliminarFila(fila);
-            }
+            eliminarFila(fila);
         }
     }
 

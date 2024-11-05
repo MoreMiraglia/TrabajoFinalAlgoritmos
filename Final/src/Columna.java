@@ -60,6 +60,14 @@ class Columna<T> {
         celdas.remove(indiceFila);
     }
 
+    public void actualizarIndices(int indiceEliminado){
+        for (Celda celda:celdas){
+            if (celda.getIndice() > indiceEliminado ){
+                celda.setIndice(celda.getIndice()-1);
+            }
+        }
+    }
+
     public void modificarValor(int indice, Object valor){
     // Permitir valor null sin hacer casting
     if (valor == null) {

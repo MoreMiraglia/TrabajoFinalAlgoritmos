@@ -23,6 +23,11 @@ public class App {
         tablaDesdeMatriz.mostrarTabla();
         tablaDesdeMatriz.mostrarFila(1);
 
+        System.out.println("Muestreo");
+
+        Tabla tablaMuestreo = tablaDesdeMatriz.muestreoAleatorio(100);
+        tablaMuestreo.mostrarTabla();
+
         
 
         List<String> nombresColumnas = List.of("Nombre", "Edad", "Activo");
@@ -83,14 +88,15 @@ public class App {
         tabla2.agregarColumna("Edad",nuevaColumna2);
 
         // Concatenar tablas y almacenar resultado
+        System.out.println("Muestra tabla concatenada");
         Tabla tablaConcatenada = new Tabla ("pepe", tabla, tabla2);
         //tablaConcatenada.mostrarTabla();
-
-        List<Celda<?>> fila2 = tablaConcatenada.devolverFila(4);
+        
+        List<Celda<Object>> fila2 = tablaConcatenada.devolverFila(4);
         System.out.println(fila2);
 
-
-
+        Tabla prueba = new Tabla("pepe","D://Users//DANTE//Documents//ALGO 1//TrabajoFinalAlgoritmos//Final//src//tablaConcatenada.csv");
+        prueba.mostrarTabla();
     }
 
 

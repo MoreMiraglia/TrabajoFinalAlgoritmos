@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 class Tabla implements Manipulacion, Limpieza, Filtro{
     private String nombreTabla;
@@ -425,8 +426,8 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         }
         return anchos;
     }
-    public List<Celda<?>> devolverFila(int indice){
-        List<Celda<?>> fila = new ArrayList<>();
+    public List<Celda<Object>> devolverFila(int indice){
+        List<Celda<Object>> fila = new ArrayList<>();
         for (Columna<?> columna : columnas) {
             for (Celda<?> celda : columna.getCeldas()) {
                 if (celda.getIndice() == indice) {
@@ -520,12 +521,12 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
    }
 
     public int getFilas(){
-        System.out.println(cantFilas);
         return cantFilas;
     }
-
-    public int getColumnas(){
-        System.out.println(cantColumnas);
+    public List<Columna<?>> getColumnas() {
+        return columnas;
+    }
+    public int getCantColumnas(){
         return cantColumnas;
     }
     public void nombreColumnas(){
@@ -552,5 +553,49 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
             }
         }
         return tablaNueva;
+    }
+
+    //metodo para crear la tabla de MUESTREO
+    public Tabla muestreoAleatorio(double porcentaje) {
+        if (porcentaje <= 0 || porcentaje > 100) {
+            throw new IllegalArgumentException("El porcentaje debe estar entre 0 y 100.");
+        }
+
+        int totalFilas = cantFilas;
+        int filasAMostrar = (int) Math.ceil(totalFilas * (porcentaje / 100.0));//redondeo el num de filas a mostrar
+
+        // Creo una lista con índices de todas las filas
+        List<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < totalFilas; i++) {
+            indices.add(i);
+        }
+
+        // Mezclo la lista y se seleccionan los primeros filasAMostrar índices
+        Collections.shuffle(indices, new Random());
+        List<Integer> indicesMuestra = indices.subList(0, filasAMostrar);
+
+
+
+        // Crear una nueva tabla con las filas seleccionadas
+        List<String> nombresColumnas = new ArrayList<>();
+        for (Columna<?> columna : columnas) {
+            nombresColumnas.add(columna.getNombre());
+        }
+        Tabla tablaMuestra = new Tabla(this.nombreTabla + "_muestra", nombresColumnas);
+        
+        
+        for (int indice : indicesMuestra) {
+            List<Celda<Object>> fila = devolverFila(indice);
+            List <Object> lista = new ArrayList<>();
+            for (Celda celda : fila){
+                lista.add(celda.getValor());
+            }
+            tablaMuestra.agregarFila(lista);
+        }
+
+        return tablaMuestra;
+    }
+    public void extrarTablaEnCSV(String rutaDestino){
+        new ArchivoCSV(this,rutaDestino);
     }
 }

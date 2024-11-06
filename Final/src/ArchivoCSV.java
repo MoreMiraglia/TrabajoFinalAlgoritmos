@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -14,6 +16,10 @@ public class ArchivoCSV {
     public ArchivoCSV(String archivoCSV) {
         columnas = new HashMap<>();
         cargarDatos(archivoCSV);
+    }
+    public ArchivoCSV(Tabla tabla,String rutaDestino) {
+        guardarTablaEnCSV(tabla, rutaDestino);
+
     }
     public Map<String, List<Object>> getMap (){
         return columnas;
@@ -55,8 +61,8 @@ public class ArchivoCSV {
 
     // Método para convertir cada dato al tipo adecuado
     private Object convertirDato(String dato) {
-        if (dato.isEmpty()) {
-            return null; // Valor nulo
+        if (dato.isEmpty() || dato.equalsIgnoreCase("NA")) { // Validación para "NA" y vacío
+            return null; // Valor nulo para valores vacíos o "NA"
         }
 
         // Intentar convertir a boolean
@@ -83,48 +89,33 @@ public class ArchivoCSV {
         }
     }
 
-    // Método para obtener los datos de una columna específica
-    public List<Object> getColumna(String nombreColumna) {
-        return columnas.getOrDefault(nombreColumna, new ArrayList<>());
-    }
+    // Método para guardar una Tabla en un archivo CSV
+    public void guardarTablaEnCSV(Tabla tabla, String archivoDestino) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoDestino))) {
+            // Escribir la cabecera con los nombres de las columnas
+            for (int i = 0; i < tabla.getColumnas().size(); i++) {
+                writer.write(tabla.getColumnas().get(i).getNombre());
+                if (i < tabla.getColumnas().size() - 1) {
+                    writer.write(","); // Agregar coma entre nombres de columnas
+                }
+            }
+            writer.newLine(); // Nueva línea después de la cabecera
 
-// Método para imprimir los datos de cada columna con formato (para pruebas)
-public void imprimirColumnasConFormato() {
-    // Determinar el ancho máximo de cada columna
-    Map<String, Integer> anchoColumnas = new HashMap<>();
-    for (Map.Entry<String, List<Object>> entry : columnas.entrySet()) {
-        String nombreColumna = entry.getKey();
-        int maxAncho = nombreColumna.length();
-        for (Object dato : entry.getValue()) {
-            maxAncho = Math.max(maxAncho, dato != null ? dato.toString().length() : 4); // "null" tiene 4 caracteres
+            // Escribir cada fila de datos
+            for (int fila = 0; fila < tabla.getFilas(); fila++) {
+                for (int col = 0; col < tabla.getColumnas().size(); col++) {
+                    Columna<?> columna = tabla.getColumnas().get(col);
+                    Object valor = columna.getCeldas().get(fila).getValor();
+                    writer.write(valor != null ? valor.toString() : ""); // Manejo de valores nulos
+
+                    if (col < tabla.getColumnas().size() - 1) {
+                        writer.write(",");
+                    }
+                }
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        anchoColumnas.put(nombreColumna, maxAncho);
     }
-
-    // Imprimir encabezados de columnas con formato
-    for (String nombreColumna : columnas.keySet()) {
-        System.out.printf("%-" + anchoColumnas.get(nombreColumna) + "s | ", nombreColumna);
-    }
-    System.out.println();
-
-    // Línea separadora
-    for (String nombreColumna : columnas.keySet()) {
-        System.out.print("-".repeat(anchoColumnas.get(nombreColumna)) + "-+-");
-    }
-    System.out.println();
-
-    // Imprimir datos de cada fila con formato
-    int numFilas = columnas.values().stream().findFirst().orElse(new ArrayList<>()).size();
-    for (int i = 0; i < numFilas; i++) {
-        for (String nombreColumna : columnas.keySet()) {
-            List<Object> datosColumna = columnas.get(nombreColumna);
-            String dato = i < datosColumna.size() && datosColumna.get(i) != null
-                    ? datosColumna.get(i).toString()
-                    : "null";
-            System.out.printf("%-" + anchoColumnas.get(nombreColumna) + "s | ", dato);
-        }
-        System.out.println();
-    }
-}
-
 }

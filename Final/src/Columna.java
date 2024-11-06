@@ -49,7 +49,7 @@ class Columna<T> {
             T tipoReferencia = celdas.get(0).getValor();
             
             // Verificar si el tipo coincide antes de agregar la nueva celda
-            if (tipoReferencia != null && !tipoReferencia.getClass().isInstance(celda.getValor())) {
+            if (celda.getValor() != null && tipoReferencia != null && !tipoReferencia.getClass().isInstance(celda.getValor())) {
                 throw new IllegalArgumentException("El tipo de dato de la celda no coincide con el tipo de dato de la columna '" + nombre + "'.");
             }
         }

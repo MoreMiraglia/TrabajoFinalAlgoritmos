@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 class Tabla implements Manipulacion, Limpieza, Filtro{
     private String nombreTabla;
     private List<Columna<?>> columnas;
@@ -249,17 +254,26 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     }
 
     @Override
-    public void mostrarNAs() {
-        System.out.println("Celdas con NA en la tabla: " + nombreTabla);
-        List <Celda<Object>> hayNAs = leerNAs();
-        if (hayNAs.isEmpty()) {
-            System.out.println("No hay valores NA en la tabla.");
-            return;
-        }
-        for (Celda celda:hayNAs){
-            System.out.println("Columna:"+ celda.getNombreColumna() + "Fila n°" + celda.getIndice() +  " - Valor: null");
-        }
+public void mostrarNAs() {
+    List<Celda<Object>> hayNAs = leerNAs();
+    if (hayNAs.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "No hay valores NA en la tabla " + nombreTabla + ".");
+        return;
     }
+
+    String[] nombresColumnas = {"Columna", "Fila", "Valor"};
+    String[][] datos = new String[hayNAs.size()][3];
+
+    for (int i = 0; i < hayNAs.size(); i++) {
+        Celda<Object> celda = hayNAs.get(i);
+        datos[i][0] = celda.getNombreColumna();
+        datos[i][1] = String.valueOf(celda.getIndice());
+        datos[i][2] = "null";
+    }
+
+    JTable tabla = new JTable(datos, nombresColumnas);
+    mostrarEnVentana("Celdas con NA en " + nombreTabla, tabla);
+}
 
     public Tabla eliminarFilasConNAs() {
         Tabla nuevaTabla = new Tabla(this);
@@ -451,49 +465,59 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     }
 
     public void head() {
-        int x = 5;
-        if (x > cantFilas) {
-            x = cantFilas; // Limitar x al número de filas disponibles
-        }
-        
-        mostrarColumnas(); // Imprime los nombres de las columnas
-        mostrarDatos(0, x); // Imprime las primeras x filas
+        head(5); // Llama a la versión de head con parámetro 5
     }
     
     public void head(int x) {
-        if (x > cantFilas) {
-            x = cantFilas; // Limitar x al número de filas disponibles
+        x = Math.min(x, cantFilas); // Limitar x al número de filas disponibles
+        String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
+        String[][] datos = new String[x][cantColumnas];
+    
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < cantColumnas; j++) {
+                Object valor = columnas.get(j).getCeldas().get(i).getValor();
+                datos[i][j] = valor == null ? "NA" : valor.toString();
+            }
         }
-        
-        mostrarColumnas(); // Imprime los nombres de las columnas
-        mostrarDatos(0, x); // Imprime las primeras x filas
+    
+        JTable tabla = new JTable(datos, nombresColumnas);
+        mostrarEnVentana("Head (Primeras " + x + " filas) de " + nombreTabla, tabla);
     }
 
     public void tail() {
-        int x = 5;
-        if (x > cantFilas) {
-            x = cantFilas; // Limitar x al número de filas disponibles
-        }
-        
-        mostrarColumnas(); // Imprime los nombres de las columnas
-        mostrarDatos(cantFilas - x, cantFilas); // Imprime las últimas x filas
+        tail(5); // Llama a la versión de tail con parámetro 5
     }
-
+    
     public void tail(int x) {
-        if (x > cantFilas) {
-            x = cantFilas; // Limitar x al número de filas disponibles
+        x = Math.min(x, cantFilas); // Limitar x al número de filas disponibles
+        int startRow = cantFilas - x;
+        String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
+        String[][] datos = new String[x][cantColumnas];
+    
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < cantColumnas; j++) {
+                Object valor = columnas.get(j).getCeldas().get(startRow + i).getValor();
+                datos[i][j] = valor == null ? "NA" : valor.toString();
+            }
         }
-        
-        mostrarColumnas(); // Imprime los nombres de las columnas
-        mostrarDatos(cantFilas - x, cantFilas); // Imprime las últimas x filas
+    
+        JTable tabla = new JTable(datos, nombresColumnas);
+        mostrarEnVentana("Tail (Últimas " + x + " filas) de " + nombreTabla, tabla);
     }
 
 
-    private void mostrarDatos() {
-        List<Integer> anchos = calcularAnchoColumnas();
-        for (int i = 0; i < cantFilas; i++) {
-            for (int j = 0; j < cantColumnas; j++) {
-                System.out.printf("%-" + anchos.get(j) + "s | ", columnas.get(j).getCeldas().get(i).getValor());
+    public void mostrarDatos() {
+        // Obtener los nombres de las columnas en el orden original
+        List<String> nombresColumnas = new ArrayList<>(columnas.keySet());
+    
+        // Calcular la cantidad de filas (asumiendo que todas las columnas tienen la misma cantidad de filas)
+        int numFilas = columnas.get(nombresColumnas.get(0)).size();
+    
+        // Mostrar cada fila de datos
+        for (int i = 0; i < numFilas; i++) {
+            for (String nombreColumna : nombresColumnas) {
+                String valor = columnas.get(nombreColumna).get(i);
+                System.out.print((valor != null ? valor : "null") + "\t");
             }
             System.out.println();
         }
@@ -510,15 +534,33 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         }
     }
 
-    public void mostrarFila(int indice){
-        mostrarColumnas();
-        mostrarDatos(indice, indice+1);
+    public void mostrarFila(int indice) {
+        String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
+        String[][] datos = new String[1][cantColumnas];
+    
+        for (int j = 0; j < cantColumnas; j++) {
+            Object valor = columnas.get(j).getCeldas().get(indice).getValor();
+            datos[0][j] = valor == null ? "NA" : valor.toString();
+        }
+    
+        JTable tabla = new JTable(datos, nombresColumnas);
+        mostrarEnVentana("Fila " + indice + " de " + nombreTabla, tabla);
     }
+
     public void mostrarTabla() {
-        mostrarColumnas();
-        mostrarDatos();
- 
-   }
+        String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
+        String[][] datos = new String[cantFilas][cantColumnas];
+    
+        for (int i = 0; i < cantFilas; i++) {
+            for (int j = 0; j < cantColumnas; j++) {
+                Object valor = columnas.get(j).getCeldas().get(i).getValor();
+                datos[i][j] = valor == null ? "NA" : valor.toString();
+            }
+        }
+    
+        JTable tabla = new JTable(datos, nombresColumnas);
+        mostrarEnVentana("Tabla Completa: " + nombreTabla, tabla);
+    }
 
     public int getFilas(){
         return cantFilas;
@@ -597,5 +639,18 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     }
     public void extrarTablaEnCSV(String rutaDestino){
         new ArchivoCSV(this,rutaDestino);
+    }
+    
+    public void mostrarEnVentana(String titulo, JTable tabla) {
+        JFrame frame = new JFrame(titulo);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        JScrollPane scrollPane = new JScrollPane(tabla);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        frame.pack();
+        frame.setLocationRelativeTo(null); // Centra la ventana en la pantalla
+        frame.setVisible(true);
     }
 }

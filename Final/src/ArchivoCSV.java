@@ -17,13 +17,16 @@ public class ArchivoCSV {
         columnas = new HashMap<>();
         cargarDatos(archivoCSV);
     }
-    public ArchivoCSV(Tabla tabla,String rutaDestino) {
-        guardarTablaEnCSV(tabla, rutaDestino);
 
+    // Constructor alternativo para guardar una Tabla en un archivo CSV
+    public ArchivoCSV(Tabla tabla, String rutaDestino) {
+        guardarTablaEnCSV(tabla, rutaDestino);
     }
-    public Map<String, List<Object>> getMap (){
+
+    public Map<String, List<Object>> getMap() {
         return columnas;
-    } 
+    }
+
     // Método para cargar datos desde el archivo CSV
     private void cargarDatos(String archivoCSV) {
         String linea;
@@ -43,8 +46,8 @@ public class ArchivoCSV {
             // Leer cada línea de datos y almacenarla en la lista correspondiente
             while ((linea = br.readLine()) != null) {
                 String[] datosFila = linea.split(separador);
- 
                 int i = 0;
+
                 for (String nombreColumna : columnas.keySet()) {
                     if (i < datosFila.length) {
                         columnas.get(nombreColumna).add(convertirDato(datosFila[i]));
@@ -69,12 +72,6 @@ public class ArchivoCSV {
         if (dato.equalsIgnoreCase("true") || dato.equals("1")) {
             return true;
         } else if (dato.equalsIgnoreCase("false") || dato.equals("0")) {
-            return false;
-        }
-        // Intentar convertir a boolean tmb en mayus
-        if (dato.equalsIgnoreCase("TRUE") || dato.equals("1")) {
-            return true;
-        } else if (dato.equalsIgnoreCase("FALSE") || dato.equals("0")) {
             return false;
         }
 

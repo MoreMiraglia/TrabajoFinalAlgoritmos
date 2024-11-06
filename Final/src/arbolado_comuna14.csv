@@ -1,0 +1,85 @@
+long,lat,nro_registro,tipo_activ,comuna,manzana,calle_nombre,calle_altura,calle_chapa,direccion_normalizada,ubicacion,nombre_cientifico,ancho_acera,estado_plantera,ubicacion_plantera,nivel_plantera,diametro_altura_pecho,altura_arbol
+"-58.4244071713735,-34.573124847367,59620,Lineal,14,NA,Bullrich Intendente Av.,500.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,53,14"
+"-58.4244071713735,-34.573124847367,59621,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,42,14"
+"-58.4244071713735,-34.573124847367,59622,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,50,14"
+"-58.4244071713735,-34.573124847367,59623,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,55,14"
+"-58.4244071713735,-34.573124847367,59624,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",Exacta,Tipuana tipu,16,Ocupada,Regular,A nivel,75,14"
+"-58.4244071713735,-34.573124847367,59625,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,60,14"
+"-58.4244071713735,-34.573124847367,59626,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,48,14"
+"-58.4244071713735,-34.573124847367,59627,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,51,14"
+"-58.4244071713735,-34.573124847367,59628,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,44,14"
+"-58.4244071713735,-34.573124847367,59629,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,53,14"
+"-58.4244071713735,-34.573124847367,59630,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,14,6"
+"-58.4244071713735,-34.573124847367,59631,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,48,14"
+"-58.4244071713735,-34.573124847367,59632,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,53,12"
+"-58.4244071713735,-34.573124847367,59634,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,29,9"
+"-58.4244071713735,-34.573124847367,59636,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Ochava,A nivel,10,3"
+"-58.4244071713735,-34.573124847367,59640,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,58,14"
+"-58.4244071713735,-34.573124847367,59641,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,25,12"
+"-58.4244071713735,-34.573124847367,59642,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,60,14"
+"-58.4244071713735,-34.573124847367,59644,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,62,14"
+"-58.4244071713735,-34.573124847367,59645,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,54,14"
+"-58.4244071713735,-34.573124847367,59646,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,54,12"
+"-58.4244071713735,-34.573124847367,59647,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,45,14"
+"-58.4244071713735,-34.573124847367,59657,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,61,14"
+"-58.4244071713735,-34.573124847367,59658,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,47,14"
+"-58.4244071713735,-34.573124847367,59659,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,16,6"
+"-58.4244071713735,-34.573124847367,59660,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,17,6"
+"-58.4244071713735,-34.573124847367,59661,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,18,6"
+"-58.4244071713735,-34.573124847367,59662,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,52,14"
+"-58.4244071713735,-34.573124847367,59663,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,54,14"
+"-58.4244071713735,-34.573124847367,59664,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,48,14"
+"-58.4244071713735,-34.573124847367,59665,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,17,6"
+"-58.4244071713735,-34.573124847367,59666,Lineal,14,NA,Bullrich Intendente Av.,NA,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,15,6"
+"-58.4244071713735,-34.573124847367,59667,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,12,6"
+"-58.4244071713735,-34.573124847367,59668,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,20,8"
+"-58.4244071713735,-34.573124847367,59669,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,53,12"
+"-58.4244071713735,-34.573124847367,59670,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LA,Tipuana tipu,16,Ocupada,Regular,A nivel,16,6"
+-58.4261669146301,-34.5735656872219,63806,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Fraxinus pennsylvanica,5,Ocupada,Regular,A nivel,35,15
+-58.4261669146301,-34.5735656872219,63807,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Fraxinus pennsylvanica,5,Ocupada,Regular,A nivel,37,15
+-58.4261669146301,-34.5735656872219,63808,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,12,5
+-58.4261669146301,-34.5735656872219,63810,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Fraxinus pennsylvanica,5,Ocupada,Regular,A nivel,3,3
+-58.4261669146301,-34.5735656872219,63811,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,3
+-58.4261669146301,-34.5735656872219,63812,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,12,5
+-58.4261669146301,-34.5735656872219,63814,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,3
+-58.4261669146301,-34.5735656872219,63815,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,2
+-58.4261669146301,-34.5735656872219,63816,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,2
+-58.4261669146301,-34.5735656872219,63817,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,2,3
+-58.4261669146301,-34.5735656872219,63818,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,2
+-58.4261669146301,-34.5735656872219,63825,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,20,5
+-58.4261669146301,-34.5735656872219,63826,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,17,6
+-58.4261669146301,-34.5735656872219,63827,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,18,8
+-58.4261669146301,-34.5735656872219,63828,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,8,4
+-58.4261669146301,-34.5735656872219,63829,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,2
+-58.4261669146301,-34.5735656872219,63831,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,8,6
+-58.4238896833953,-34.570848926448804,63832,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,45,10
+-58.4261669146301,-34.5735656872219,63833,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,3
+-58.4261669146301,-34.5735656872219,63834,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,3
+-58.4261669146301,-34.5735656872219,63835,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,2
+-58.4261669146301,-34.5735656872219,63836,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,12,5
+-58.4261669146301,-34.5735656872219,63837,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,1,2
+-58.4261669146301,-34.5735656872219,63838,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LA,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,25,6
+-58.4238896833953,-34.570848926448804,63839,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,22,7
+-58.4238896833953,-34.570848926448804,64076,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,45,10
+-58.4238896833953,-34.570848926448804,64077,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,45,10
+-58.4238896833953,-34.570848926448804,64078,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,47,10
+-58.4238896833953,-34.570848926448804,64079,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,42,9
+-58.4238896833953,-34.570848926448804,64081,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,37,9
+-58.4238896833953,-34.570848926448804,64083,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,42,10
+-58.4238896833953,-34.570848926448804,64084,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,50,8
+-58.4238896833953,-34.570848926448804,64085,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,45,10
+-58.4238896833953,-34.570848926448804,64086,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,15,7
+-58.4238896833953,-34.570848926448804,64087,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,38,10
+-58.4238896833953,-34.570848926448804,64088,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,31,8
+-58.4261669146301,-34.5735656872219,64089,Lineal,14,NA,Cerviño Av.,4800.0,4851,CERVIÑO AV. 4851,LD,Liquidambar styraciflua,5,Ocupada,Regular,A nivel,8,5
+-58.4238896833953,-34.570848926448804,64090,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,4,Ocupada,Regular,A nivel,48,10
+-58.4238896833953,-34.570848926448804,64093,Lineal,14,NA,Dorrego Av.,3300.0,3305,DORREGO AV. 3305,LA,Tipuana tipu,5,Ocupada,Regular,A nivel,37,8
+"-58.4244071713735,-34.573124847367,64790,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,52,14"
+"-58.4244071713735,-34.573124847367,64791,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,52,14"
+"-58.4244071713735,-34.573124847367,64792,Lineal,14,NA,Bullrich Intendente Av.,0.0,55,""BULLRICH, INT. AV. 55"",LD,Tipuana tipu,16,Ocupada,Regular,A nivel,50,14"
+-58.4371780937751,-34.5807819599621,64827,Lineal,14,NA,Costa Rica,5800.0,5844,COSTA RICA 5844,Exacta,Fraxinus pennsylvanica,3.2,Ocupada,Regular,Bajo nivel,35,10
+-58.437645871795304,-34.5804160361579,64828,Lineal,14,NA,Costa Rica,5800.0,5892,COSTA RICA 5892,Exacta,Ailanthus altissima,3.2,Ocupada,Ochava,A nivel,43,11
+-58.4375784895454,-34.580468746876505,64831,Lineal,14,NA,Costa Rica,5800.0,5886,COSTA RICA 5886,Exacta,Fraxinus pennsylvanica,3.2,Ocupada,Regular,Elevada,15,6
+-58.437451386116706,-34.5805681750445,64836,Lineal,14,NA,Costa Rica,5800.0,5876,COSTA RICA 5876,Exacta,Ficus benjamina,3.2,Ocupada,Regular,Elevada,93,11
+-58.4375158262158,-34.5805177660466,64838,Lineal,14,NA,Costa Rica,5800.0,5882,COSTA RICA 5882,Exacta,Fraxinus pennsylvanica,3.2,Ocupada,Regular,Bajo nivel,3,3
+-58.43738327319261,-34.5806214570375,64839,Lineal,14,NA,Costa Rica,5800.0,5870,COSTA RICA 5870,Exacta,Fraxinus pennsylvanica,3.2,Sobreocupada,Regular,Elevada,40,10

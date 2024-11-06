@@ -119,6 +119,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
 
     public void cargarDatosTabla(ArchivoCSV archivoCSV) {
         Map<String, List<Object>> datos = archivoCSV.getMap();
+
         for (Map.Entry<String, List<Object>> entry : datos.entrySet()) {
             List<Celda<Object>> celdas = new ArrayList<>();
             for (Object valor : entry.getValue()) {
@@ -451,7 +452,8 @@ public void mostrarNAs() {
         }
         return fila;
     }
-    private void mostrarColumnas() {
+    // Método para mostrar el nombre y el contenido de las columnas con una alineación correcta
+    public void mostrarColumnas() {
         List<Integer> anchos = calcularAnchoColumnas();
         for (int i = 0; i < cantColumnas; i++) {
             System.out.printf("%-" + anchos.get(i) + "s | ", columnas.get(i).getNombre());
@@ -468,18 +470,20 @@ public void mostrarNAs() {
         head(5); // Llama a la versión de head con parámetro 5
     }
     
+
+    // Método head actualizado para las primeras filas con asignación correcta de nombres y datos
     public void head(int x) {
         x = Math.min(x, cantFilas); // Limitar x al número de filas disponibles
         String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
         String[][] datos = new String[x][cantColumnas];
-    
+
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < cantColumnas; j++) {
                 Object valor = columnas.get(j).getCeldas().get(i).getValor();
                 datos[i][j] = valor == null ? "NA" : valor.toString();
             }
         }
-    
+
         JTable tabla = new JTable(datos, nombresColumnas);
         mostrarEnVentana("Head (Primeras " + x + " filas) de " + nombreTabla, tabla);
     }
@@ -488,40 +492,36 @@ public void mostrarNAs() {
         tail(5); // Llama a la versión de tail con parámetro 5
     }
     
+    // Método tail actualizado para las últimas filas con asignación correcta de nombres y datos
     public void tail(int x) {
         x = Math.min(x, cantFilas); // Limitar x al número de filas disponibles
         int startRow = cantFilas - x;
         String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
         String[][] datos = new String[x][cantColumnas];
-    
+
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < cantColumnas; j++) {
                 Object valor = columnas.get(j).getCeldas().get(startRow + i).getValor();
                 datos[i][j] = valor == null ? "NA" : valor.toString();
             }
         }
-    
+
         JTable tabla = new JTable(datos, nombresColumnas);
         mostrarEnVentana("Tail (Últimas " + x + " filas) de " + nombreTabla, tabla);
     }
 
 
-    public void mostrarDatos() {
-        // Obtener los nombres de las columnas en el orden original
-        List<String> nombresColumnas = new ArrayList<>(columnas.keySet());
-    
-        // Calcular la cantidad de filas (asumiendo que todas las columnas tienen la misma cantidad de filas)
-        int numFilas = columnas.get(nombresColumnas.get(0)).size();
-    
-        // Mostrar cada fila de datos
-        for (int i = 0; i < numFilas; i++) {
-            for (String nombreColumna : nombresColumnas) {
-                String valor = columnas.get(nombreColumna).get(i);
-                System.out.print((valor != null ? valor : "null") + "\t");
+        private void mostrarDatos() {
+            List<Integer> anchos = calcularAnchoColumnas();
+            for (int i = 0; i < cantFilas; i++) {
+                for (int j = 0; j < cantColumnas; j++) {
+                    System.out.printf("%-" + anchos.get(j) + "s | ", columnas.get(j).getCeldas().get(i).getValor());
+                }
+                System.out.println();
             }
-            System.out.println();
         }
-    }
+
+
 
     public void mostrarDatos(int startRow, int endRow) {
         List<Integer> anchos = calcularAnchoColumnas();
@@ -534,34 +534,35 @@ public void mostrarNAs() {
         }
     }
 
+    // Método mostrarFila actualizado para una sola fila con correcta alineación de datos
     public void mostrarFila(int indice) {
         String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
         String[][] datos = new String[1][cantColumnas];
-    
+
         for (int j = 0; j < cantColumnas; j++) {
             Object valor = columnas.get(j).getCeldas().get(indice).getValor();
             datos[0][j] = valor == null ? "NA" : valor.toString();
         }
-    
+
         JTable tabla = new JTable(datos, nombresColumnas);
         mostrarEnVentana("Fila " + indice + " de " + nombreTabla, tabla);
     }
 
+    // Método para mostrar toda la tabla con nombres y datos bien alineados
     public void mostrarTabla() {
         String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
         String[][] datos = new String[cantFilas][cantColumnas];
-    
+
         for (int i = 0; i < cantFilas; i++) {
             for (int j = 0; j < cantColumnas; j++) {
                 Object valor = columnas.get(j).getCeldas().get(i).getValor();
                 datos[i][j] = valor == null ? "NA" : valor.toString();
             }
         }
-    
+
         JTable tabla = new JTable(datos, nombresColumnas);
         mostrarEnVentana("Tabla Completa: " + nombreTabla, tabla);
-    }
-
+}
     public int getFilas(){
         return cantFilas;
     }

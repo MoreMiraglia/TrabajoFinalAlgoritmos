@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class ArchivoCSV {
 
     // Constructor que recibe la ruta del archivo y carga los datos
     public ArchivoCSV(String archivoCSV) {
-        columnas = new HashMap<>();
+        columnas = new LinkedHashMap<>();
         cargarDatos(archivoCSV);
     }
 
@@ -36,7 +37,7 @@ public class ArchivoCSV {
             // Leer la primera línea para obtener los nombres de las columnas
             if ((linea = br.readLine()) != null) {
                 String[] nombresColumnas = linea.split(separador);
-
+                
                 // Inicializar una lista vacía para cada columna
                 for (String nombreColumna : nombresColumnas) {
                     columnas.put(nombreColumna, new ArrayList<>());

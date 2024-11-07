@@ -654,4 +654,32 @@ public void mostrarNAs() {
         frame.setLocationRelativeTo(null); // Centra la ventana en la pantalla
         frame.setVisible(true);
     }
+
+    public Tabla Ordenamiento(List<String> nombreColumna, List<Boolean> criteriosAscendentes) { 
+        // Crear una copia de la tabla actual
+        Tabla tablanueva = new Tabla(this);
+        Ordenamiento ordenar = new Ordenamiento(tablanueva);
+
+        // Obtener el nuevo orden de índices de las filas
+        List<Integer> ordenIndices = ordenar.obtenerOrdenIndices(nombreColumna, criteriosAscendentes);
+
+        // Reorganizar las celdas de cada columna según el orden de índices
+        for (Columna<?> columna : tablanueva.getColumnas()) {
+            List<Celda<?>> celdasOriginales = new ArrayList<>(columna.getCeldas());
+            List<Celda<?>> celdasOrdenadas = new ArrayList<>();
+
+            for (int indice : ordenIndices) {
+                celdasOrdenadas.add(celdasOriginales.get(indice));
+            }
+
+            // Actualizar las celdas de la columna con el nuevo orden
+            List<?> celdasColumna = columna.getCeldas();
+            for (int i = 0; i < celdasOrdenadas.size(); i++) {
+                ((List<Celda<?>>) celdasColumna).set(i, celdasOrdenadas.get(i));
+            }
+        }
+
+        return tablanueva;
+    }
+
 }

@@ -3,11 +3,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 class Tabla implements Manipulacion, Limpieza, Filtro{
     private String nombreTabla;
@@ -15,7 +12,14 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     private int cantColumnas;
     private int cantFilas;
 
-
+    /**
+     * Constructor de la clase Tabla que inicializa una tabla a partir de un archivo CSV.
+     * Se asume que la primera fila del archivo contiene los nombres de las columnas.
+     * 
+     * @param nombreTabla El nombre asignado a la tabla.
+     * @param rutaArchivo Ruta del archivo CSV desde el cual se cargarán los datos.
+     *                     Este archivo se leerá para poblar las columnas y filas de la tabla.
+     */
     public Tabla(String nombreTabla, String rutaArchivo) {
         this.nombreTabla = nombreTabla;
         this.columnas = new ArrayList<>();
@@ -25,7 +29,14 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         setCantFilas();
         
     }
-
+    /**
+     * Constructor de la clase Tabla que inicializa una tabla con columnas vacías,
+     * utilizando una lista de nombres de columnas.
+     *
+     * @param nombreTabla El nombre asignado a la tabla.
+     * @param nombresColumnas Lista de nombres de las columnas que se crearán en la tabla.
+     *                         Cada elemento de la lista se convertirá en una columna vacía.
+     */
     public Tabla(String nombreTabla, List<String> nombresColumnas) {
         this.nombreTabla = nombreTabla;
         this.columnas = new ArrayList<>();
@@ -35,8 +46,15 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         this.cantColumnas = columnas.size();
         setCantFilas();
     }
-
-    // Constructor desde Object[][], tomando la primera fila como nombres de columnas
+    /**
+     * Constructor que crea una tabla a partir de una matriz bidimensional de objetos. 
+     * Se asume que la primera fila contiene los nombres de las columnas.
+     *
+     * @param nombreTabla El nombre de la tabla.
+     * @param datos Una matriz bidimensional de objetos, donde la primera fila contiene los nombres de las columnas 
+     *              y las filas posteriores contienen los datos correspondientes a cada columna.
+     * @throws IllegalArgumentException Si la matriz de datos está vacía, no se realiza ninguna acción.
+     */
     public Tabla(String nombreTabla, Object[][] datos) {
         this.nombreTabla = nombreTabla;
         this.columnas = new ArrayList<>();
@@ -55,8 +73,12 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         this.cantColumnas = columnas.size();
         setCantFilas();
     }
-
-    // Constructor de la copia de la tabla original. (Constructor de copia profunda)
+    /**
+     * Constructor de copia profunda que crea una nueva tabla a partir de otra tabla existente.
+     * Se copian los datos y las columnas de la tabla original a la nueva tabla.
+     *
+     * @param otraTabla La tabla original que se va a copiar.
+     */
     public Tabla(Tabla otraTabla) {
         this.nombreTabla = otraTabla.nombreTabla;
         this.columnas = new ArrayList<>();
@@ -66,8 +88,15 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         this.cantColumnas = columnas.size();
         setCantFilas();
     }
-    
-    // Constructor que recibe una secuencia lineal de datos y nombres de columnas
+    /**
+     * Constructor que crea una tabla a partir de una lista de nombres de columnas y una lista de datos lineales.
+     * Los datos se distribuyen en las columnas según el orden en la lista de datos.
+     *
+     * @param nombreTabla El nombre de la tabla.
+     * @param nombresColumnas Lista de nombres de las columnas.
+     * @param datosLineales Lista de datos que se distribuirán entre las columnas.
+     * @throws IllegalArgumentException Si el número de elementos en datosLineales no es un múltiplo del número de columnas.
+     */
     public Tabla(String nombreTabla, List<String> nombresColumnas, List<Object> datosLineales) {
         this.nombreTabla = nombreTabla;
         this.columnas = new ArrayList<>();
@@ -92,8 +121,15 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         this.cantColumnas = columnas.size();
         setCantFilas();
     }
-
-    //Constructor que genera una tabla concatenada, dada dos tablas iguales
+    /**
+     * Constructor que crea una tabla concatenando dos tablas existentes, asegurándose de que ambas tablas tengan las mismas columnas.
+     * Si las tablas no son compatibles, se lanza una excepción.
+     *
+     * @param nombre El nombre asignado a la tabla concatenada.
+     * @param tabla1 La primera tabla a concatenar.
+     * @param tabla2 La segunda tabla a concatenar.
+     * @throws IllegalArgumentException Si las tablas no tienen el mismo número de columnas o columnas incompatibles.
+     */
     public Tabla(String nombre,Tabla tabla1, Tabla tabla2) {
         // Verificar que las tablas tengan las mismas columnas (cantidad y nombres)
         if (!sonColumnasCompatibles(tabla1, tabla2)) {
@@ -116,7 +152,14 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         //Actulizar cantidad de filas
         setCantFilas();
     }
-
+    /**
+     * Carga los datos de la tabla a partir de un archivo CSV.
+     * Los datos del archivo CSV se almacenan en un mapa, donde las claves son los nombres de las columnas
+     * y los valores son las listas de objetos correspondientes a los valores de cada columna.
+     * Para cada columna en el archivo CSV, se crea una nueva columna en la tabla.
+     *
+     * @param archivoCSV El objeto que contiene los datos del archivo CSV a cargar en la tabla.
+     */
     public void cargarDatosTabla(ArchivoCSV archivoCSV) {
         Map<String, List<Object>> datos = archivoCSV.getMap();
 
@@ -130,10 +173,20 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         }
 
     }
+    /**
+     * Establece la cantidad de filas en la tabla, basándose en la cantidad de celdas de la primera columna.
+     * Este método asume que todas las columnas tienen la misma cantidad de filas.
+     */
     public void setCantFilas (){
         this.cantFilas = columnas.get(0).getCeldas().size(); 
     }
-
+    /**
+     * Agrega una nueva columna a la tabla, verificando que la longitud de la nueva columna coincida
+     * con el número de filas actuales en la tabla.
+     *
+     * @param columna La columna que se desea agregar a la tabla.
+     * @throws IllegalArgumentException Si la longitud de la columna no coincide con el número de filas de la tabla.
+     */
     @Override
     public void agregarColumna(Columna columna) {
         if (columna.getCeldas().size() != cantFilas) {
@@ -142,7 +195,15 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         columnas.add(columna);
         cantColumnas = columnas.size(); 
     }
-
+    /**
+     * Agrega una nueva columna a la tabla a partir de un arreglo de objetos. 
+     * Verificando que la longitud del arreglo coincida con el número de filas de la tabla.
+     * Se crea una columna a partir del nombre proporcionado y los datos del arreglo.
+     *
+     * @param nombre El nombre de la nueva columna.
+     * @param nuevaColumnaArray El arreglo de datos que contiene los valores de la nueva columna.
+     * @throws IllegalArgumentException Si la longitud del arreglo no coincide con el número de filas de la tabla.
+     */
     @Override
     public void agregarColumna(String nombre, Object[] nuevaColumnaArray) {
         // Verificar que la longitud del arreglo coincida con el número de filas de la tabla
@@ -164,7 +225,12 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         // Actualizar el conteo de columnas
         cantColumnas = columnas.size();
     }
-
+    /**
+     * Agrega una nueva fila de valores a la tabla.
+     *
+     * @param valores Lista de valores que conforman la fila.
+     * @throws IllegalArgumentException Si la cantidad de valores no coincide con el número de columnas.
+     */
     @Override
     public void agregarFila(List<Object> valores) {
         // Verificar que la cantidad de valores coincida con el número de columnas
@@ -181,7 +247,14 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         // Actualizar el número de filas
         setCantFilas();
     }
-
+    /**
+     * Elimina una columna de la tabla, dado su nombre.
+     * Si la columna no existe, se muestra un mensaje indicando que no se encontró la columna.
+     * 
+     * @param nombreColumna El nombre de la columna que se desea eliminar.
+     * @return Una nueva instancia de la tabla con la columna eliminada.
+     *         Si la columna no se encuentra, la tabla original se devuelve sin cambios.
+     */
     public Tabla eliminarColumna(String nombreColumna) {
         Tabla nuevaTabla = new Tabla(this);
         Columna<?> columnaAEliminar = null;
@@ -203,7 +276,12 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         }
         return nuevaTabla;
     }
-
+    /**
+     * Elimina una fila específica de la tabla según su índice.
+     *
+     * @param indice Índice de la fila a eliminar.
+     * @throws IndexOutOfBoundsException Si el índice está fuera del rango de filas.
+     */
     public Tabla eliminarFila(int indiceFila) {
         Tabla nuevaTabla = new Tabla (this);
         // Verificar si el índice de la fila es válido
@@ -225,13 +303,24 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
             columna.actualizarIndices(indiceEliminado);
         }
     }
-
+    /**
+     * Muestra en consola el tipo de dato de cada columna en la tabla.
+     * Recorre todas las columnas de la tabla y llama al método {@link Columna#getTipoDeDato()} 
+     * para cada una de ellas, mostrando el tipo de dato de cada columna en la consola.
+     */
     public void getTipoDato(){
         for (Columna<?> columna : columnas) {
             columna.getTipoDeDato();           
         }
     }
 
+    /**
+     * Obtiene el tipo de dato de una columna específica y lo muestra en consola.
+     *
+     * @param nombreColumna El nombre de la columna de la cual queremos obtener el tipo de dato.
+     *                      Si la columna existe, muestra el tipo de dato en consola;
+     *                      si no, muestra un mensaje de error.
+     */
     public void getTipoDato (String nombreColumna) {
         for (Columna<?> columna : columnas) {
             if (columna.getNombre().equals(nombreColumna)) {
@@ -242,7 +331,15 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         System.out.println("La columna '" + nombreColumna + "' no existe en la tabla.");
     }
     
-
+    /**
+     * Reasigna un valor en una fila específica de una columna y devuelve una nueva tabla con el cambio.
+     *
+     * @param nombre Nombre de la columna en la que queremos reasignar el valor.
+     * @param indice Índice de la fila en la que se realizará el cambio.
+     * @param nuevoValor Nuevo valor que se asignará en la celda.
+     * @return Una nueva instancia de Tabla con el valor modificado en la celda indicada.
+     * @throws IllegalArgumentException Si el índice está fuera de rango o si el nuevo valor no es del tipo adecuado.
+     */
     @Override
     public Tabla reasignarValor(String nombre,int indice, Object nuevoValor){
         Tabla nuevaTabla = new Tabla(this);
@@ -253,29 +350,39 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         }
         return nuevaTabla;
     }
-
+    /**
+     * Muestra todas las celdas que contienen valores nulos (NA).
+     * Si no existen valores NA en la tabla, muestra un mensaje indicando que no hay valores NA.
+     * Muestra los nombres de las columnas, índices de filas y valores de las celdas con valores NA en una ventana.
+     */
     @Override
-public void mostrarNAs() {
-    List<Celda<Object>> hayNAs = leerNAs();
-    if (hayNAs.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "No hay valores NA en la tabla " + nombreTabla + ".");
-        return;
+    public void mostrarNAs() {
+        List<Celda<Object>> hayNAs = leerNAs();
+        if (hayNAs.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay valores NA en la tabla " + nombreTabla + ".");
+            return;
+        }
+
+        String[] nombresColumnas = {"Columna", "Fila", "Valor"};
+        String[][] datos = new String[hayNAs.size()][3];
+
+        for (int i = 0; i < hayNAs.size(); i++) {
+            Celda<Object> celda = hayNAs.get(i);
+            datos[i][0] = celda.getNombreColumna();
+            datos[i][1] = String.valueOf(celda.getIndice());
+            datos[i][2] = "null";
+        }
+
+        JTable tabla = new JTable(datos, nombresColumnas);
+        mostrarEnVentana("Celdas con NA en " + nombreTabla, tabla);
     }
-
-    String[] nombresColumnas = {"Columna", "Fila", "Valor"};
-    String[][] datos = new String[hayNAs.size()][3];
-
-    for (int i = 0; i < hayNAs.size(); i++) {
-        Celda<Object> celda = hayNAs.get(i);
-        datos[i][0] = celda.getNombreColumna();
-        datos[i][1] = String.valueOf(celda.getIndice());
-        datos[i][2] = "null";
-    }
-
-    JTable tabla = new JTable(datos, nombresColumnas);
-    mostrarEnVentana("Celdas con NA en " + nombreTabla, tabla);
-}
-
+    /**
+     * Elimina todas las filas que contienen valores NA en una nueva tabla.
+     * Si no existen valores NA en la tabla, muestra un mensaje y devuelve null.
+     * 
+     * @return Una nueva instancia de Tabla sin las filas con valores NA. Si no hay valores NA, devuelve null.
+     */
+    @Override
     public Tabla eliminarFilasConNAs() {
         Tabla nuevaTabla = new Tabla(this);
         List <Celda<Object>> celdasNAs = leerNAs();
@@ -289,7 +396,14 @@ public void mostrarNAs() {
         System.out.println("Se eliminaron " + celdasNAs.size() + " filas con valores NA.");
         return nuevaTabla;
     }
-
+    /**
+     * Elimina las filas que contienen valores NA en una columna específica.
+     * Si no existen valores NA en la columna, muestra un mensaje y devuelve null.
+     * 
+     * @param nombreColumna El nombre de la columna en la que se buscarán valores NA.
+     * @return Una nueva instancia de Tabla sin las filas con valores NA en la columna indicada. 
+     *         Si no hay valores NA en esa columna, devuelve null.
+     */
     @Override
     public Tabla eliminarFilasConNAs(String nombreColumna) {
         Tabla nuevaTabla = new Tabla(this);
@@ -312,8 +426,14 @@ public void mostrarNAs() {
         System.out.println("Se eliminaron " + cantEliminadas + " filas con valores NA de la columna" + nombreColumna);
         return nuevaTabla;
     }
-
-    // Método para verificar compatibilidad de columnas entre dos tablas
+    /**
+     * Verifica si las columnas de dos tablas son compatibles.
+     * Las columnas se consideran compatibles si tienen el mismo nombre y tipo de dato.
+     *
+     * @param tabla1 La primera tabla a comparar.
+     * @param tabla2 La segunda tabla a comparar.
+     * @return true si las columnas son compatibles, false si no lo son.
+     */
     private boolean sonColumnasCompatibles(Tabla tabla1, Tabla tabla2) {
         if (tabla1.cantColumnas != tabla2.cantColumnas) {
             return false;
@@ -331,6 +451,11 @@ public void mostrarNAs() {
 
         return true;
     }
+    /**
+     * Copia las filas de una tabla y las agrega a la tabla actual.
+     *
+     * @param tabla La tabla desde la cual se copian las filas.
+     */
     private void copiarFilas(Tabla tabla){
         for (int i = 0; i < tabla.cantFilas; i++) {
             List<Object> fila = new ArrayList<>();
@@ -340,8 +465,15 @@ public void mostrarNAs() {
             this.agregarFila(fila);
         }
     }
-
-    // Método para filtrar por columna
+    /**
+     * Filtra las filas de la tabla de acuerdo a un valor específico en una columna y devuelve una nueva tabla con las filas filtradas.
+     * Si la columna no existe o el valor es incompatible, se lanza una excepción.
+     *
+     * @param nombreColumna El nombre de la columna en la que se realizará el filtro.
+     * @param valor El valor que se usará para filtrar las filas.
+     * @return Una nueva instancia de Tabla con las filas que cumplen la condición de filtro.
+     * @throws IllegalArgumentException Si la columna no existe o el valor es de un tipo incompatible.
+     */
     @Override
     public Tabla filtrarPorColumna(String nombreColumna, Object valor) {
     // Crear una nueva tabla para almacenar los resultados filtrados
@@ -372,8 +504,12 @@ public void mostrarNAs() {
 
     return tablaFiltrada;
 
-}
-     // Método para obtener los nombres de las columnas
+    }
+    /**
+     * Obtiene los nombres de todas las columnas en la tabla.
+     *
+     * @return Una lista de cadenas que contiene los nombres de todas las columnas.
+     */        
     private List<String> obtenerNombresColumnas() {
         List<String> nombres = new ArrayList<>();
         for (Columna<?> columna : columnas) {
@@ -381,8 +517,13 @@ public void mostrarNAs() {
         }
         return nombres;
     }
-    //Metodo para buscar por valor 
-
+    /**
+     * Busca un valor específico en una columna y devuelve una nueva tabla con las filas que contienen ese valor.
+     *
+     * @param nombreColumna El nombre de la columna en la que buscar el valor.
+     * @param valor El valor que se busca en la columna.
+     * @return Una nueva instancia de Tabla con las filas que contienen el valor buscado.
+     */
     @Override
     public Tabla buscarValor(String nombreColumna, Object valor) {
     // Crear una nueva tabla para almacenar los resultados encontrados
@@ -413,7 +554,11 @@ public void mostrarNAs() {
 
     return tablaResultado;
     }
-
+    /**
+     * Lee todas las celdas que contienen valores nulos (NA) en la tabla.
+     *
+     * @return Una lista de celdas con valores nulos (NA).
+     */
     @Override 
     public List<Celda<Object>> leerNAs() {
         List<Celda<Object>> celdasNA = new ArrayList<>();
@@ -428,8 +573,11 @@ public void mostrarNAs() {
 
         return celdasNA;
     }
-
-    // Métodos de visualización
+    /**
+     * Calcula el ancho máximo de cada columna en la tabla, basado en el tamaño del contenido más largo.
+     *
+     * @return Una lista de enteros que representa el ancho máximo de cada columna.
+     */
     private List<Integer> calcularAnchoColumnas() {
         List<Integer> anchos = new ArrayList<>();
         for (Columna<?> columna : columnas) {
@@ -441,6 +589,12 @@ public void mostrarNAs() {
         }
         return anchos;
     }
+    /**
+     * Devuelve una fila de la tabla en el índice especificado.
+     *
+     * @param indice El índice de la fila que se desea obtener.
+     * @return Una lista de celdas que conforman la fila en el índice especificado.
+     */
     public List<Celda<Object>> devolverFila(int indice){
         List<Celda<Object>> fila = new ArrayList<>();
         for (Columna<?> columna : columnas) {
@@ -452,7 +606,9 @@ public void mostrarNAs() {
         }
         return fila;
     }
-    // Método para mostrar el nombre y el contenido de las columnas con una alineación correcta
+    /**
+     * Muestra el nombre y el contenido de las columnas de la tabla con una alineación adecuada.
+     */
     public void mostrarColumnas() {
         List<Integer> anchos = calcularAnchoColumnas();
         for (int i = 0; i < cantColumnas; i++) {
@@ -469,9 +625,12 @@ public void mostrarNAs() {
     public void head() {
         head(5); // Llama a la versión de head con parámetro 5
     }
-    
-
-    // Método head actualizado para las primeras filas con asignación correcta de nombres y datos
+    /**
+     * Muestra las primeras 'x' filas de la tabla, con los nombres de columnas y los datos correspondientes.
+     * Si 'x' es mayor al número de filas disponibles, se ajusta al número máximo de filas.
+     *
+     * @param x El número de filas que se mostrarán desde el principio de la tabla.
+     */
     public void head(int x) {
         x = Math.min(x, cantFilas); // Limitar x al número de filas disponibles
         String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
@@ -487,12 +646,18 @@ public void mostrarNAs() {
         JTable tabla = new JTable(datos, nombresColumnas);
         mostrarEnVentana("Head (Primeras " + x + " filas) de " + nombreTabla, tabla);
     }
-
+    /**
+     * Muestra las últimas 5 filas de la tabla llamando al método `tail(int x)` con el parámetro 5.
+     */
     public void tail() {
         tail(5); // Llama a la versión de tail con parámetro 5
     }
-    
-    // Método tail actualizado para las últimas filas con asignación correcta de nombres y datos
+    /**
+     * Muestra las últimas 'x' filas de la tabla, con los nombres de columnas y los datos correspondientes.
+     * Si 'x' es mayor al número de filas disponibles, se ajusta al número máximo de filas.
+     *
+     * @param x El número de filas que se mostrarán desde el final de la tabla.
+     */
     public void tail(int x) {
         x = Math.min(x, cantFilas); // Limitar x al número de filas disponibles
         int startRow = cantFilas - x;
@@ -509,20 +674,12 @@ public void mostrarNAs() {
         JTable tabla = new JTable(datos, nombresColumnas);
         mostrarEnVentana("Tail (Últimas " + x + " filas) de " + nombreTabla, tabla);
     }
-
-
-        private void mostrarDatos() {
-            List<Integer> anchos = calcularAnchoColumnas();
-            for (int i = 0; i < cantFilas; i++) {
-                for (int j = 0; j < cantColumnas; j++) {
-                    System.out.printf("%-" + anchos.get(j) + "s | ", columnas.get(j).getCeldas().get(i).getValor());
-                }
-                System.out.println();
-            }
-        }
-
-
-
+    /**
+     * Muestra los datos de las filas dentro del rango especificado, con los nombres de columnas y los datos correspondientes.
+     *
+     * @param startRow El índice de la primera fila que se mostrará.
+     * @param endRow El índice de la última fila que se mostrará.
+     */
     public void mostrarDatos(int startRow, int endRow) {
         List<Integer> anchos = calcularAnchoColumnas();
         
@@ -533,8 +690,11 @@ public void mostrarNAs() {
             System.out.println();
         }
     }
-
-    // Método mostrarFila actualizado para una sola fila con correcta alineación de datos
+    /**
+     * Muestra una fila específica de la tabla, con los nombres de columnas y los datos correspondientes.
+     *
+     * @param indice El índice de la fila que se mostrará.
+     */
     public void mostrarFila(int indice) {
         String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
         String[][] datos = new String[1][cantColumnas];
@@ -547,8 +707,9 @@ public void mostrarNAs() {
         JTable tabla = new JTable(datos, nombresColumnas);
         mostrarEnVentana("Fila " + indice + " de " + nombreTabla, tabla);
     }
-
-    // Método para mostrar toda la tabla con nombres y datos bien alineados
+    /**
+     * Muestra toda la tabla, con los nombres de columnas y los datos correspondientes, bien alineados.
+     */
     public void mostrarTabla() {
         String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
         String[][] datos = new String[cantFilas][cantColumnas];
@@ -562,21 +723,45 @@ public void mostrarNAs() {
 
         JTable tabla = new JTable(datos, nombresColumnas);
         mostrarEnVentana("Tabla Completa: " + nombreTabla, tabla);
-}
+    }
+    /**
+     * Devuelve el número de filas en la tabla.
+     *
+     * @return El número de filas en la tabla.
+     */
     public int getFilas(){
         return cantFilas;
     }
+    /**
+     * Devuelve la lista de columnas en la tabla.
+     *
+     * @return Una lista con las columnas de la tabla.
+     */
     public List<Columna<?>> getColumnas() {
         return columnas;
     }
-    public int getCantColumnas(){
+    /**
+     * Devuelve el número de columnas en la tabla.
+     *
+     * @return El número de columnas en la tabla.
+     */
+    public int getCantColumnas() {
         return cantColumnas;
     }
+    /**
+     * Muestra los nombres de todas las columnas de la tabla en la consola.
+     */
     public void nombreColumnas(){
         for (Columna columna : columnas){
             System.out.println(columna.getNombre());
         }
     }
+    /**
+     * Crea una nueva instancia de la tabla con los valores "NA" reemplazados en todas las columnas.
+     * Este método llama al método reemplazarNAs de cada columna de la tabla actual, generando una nueva tabla con estos cambios.
+     *
+     * @return una nueva instancia de Tabla con los valores "NA" reemplazados en todas las columnas.
+     */
     @Override
     public Tabla reemplazarNAs() {
         Tabla tablaNueva = new Tabla(this);
@@ -585,7 +770,14 @@ public void mostrarNAs() {
         }
         return tablaNueva;
     }
-
+    /**
+     * Crea una nueva instancia de la tabla con los valores "NA" reemplazados en una columna específica.
+     * Este método busca una columna por su nombre y, si coincide, llama a reemplazarNAs en esa columna específica,
+     * generando una nueva tabla con ese cambio.
+     *
+     * @param nombreColumna el nombre de la columna en la que se reemplazarán los valores "NA".
+     * @return una nueva instancia de Tabla con los valores "NA" reemplazados en la columna especificada.
+     */
     @Override
     public Tabla reemplazarNAs(String nombreColumna) {
         Tabla tablaNueva = new Tabla(this);
@@ -598,7 +790,13 @@ public void mostrarNAs() {
         return tablaNueva;
     }
 
-    //metodo para crear la tabla de MUESTREO
+    /**
+     * Genera una muestra aleatoria de la tabla basada en un porcentaje dado.
+     *
+     * @param porcentaje Porcentaje de filas a incluir en la muestra (entre 0 y 100).
+     * @return Una nueva instancia de Tabla con las filas seleccionadas aleatoriamente.
+     * @throws IllegalArgumentException Si el porcentaje no está entre 0 y 100.
+     */
     public Tabla muestreoAleatorio(double porcentaje) {
         if (porcentaje <= 0 || porcentaje > 100) {
             throw new IllegalArgumentException("El porcentaje debe estar entre 0 y 100.");
@@ -638,10 +836,24 @@ public void mostrarNAs() {
 
         return tablaMuestra;
     }
+    /**
+     * Exporta la tabla actual a un archivo CSV en la ubicación especificada.
+     * Este método crea una nueva instancia de ArchivoCSV, que se encarga de escribir
+     * el contenido de la tabla en un archivo en formato CSV.
+     *
+     * @param rutaDestino la ruta de destino donde se guardará el archivo CSV.
+     */
     public void extrarTablaEnCSV(String rutaDestino){
         new ArchivoCSV(this,rutaDestino);
     }
-    
+    /**
+     * Muestra la tabla en una ventana emergente con un título y una representación de {@code JTable}.
+     * Este método crea una nueva ventana que contiene una {@code JTable} dentro de un {@code JScrollPane},
+     * permitiendo visualizar los datos de la tabla.
+     *
+     * @param titulo el título de la ventana.
+     * @param tabla el {@code JTable} que contiene los datos de la tabla.
+     */
     public void mostrarEnVentana(String titulo, JTable tabla) {
         JFrame frame = new JFrame(titulo);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -654,7 +866,15 @@ public void mostrarNAs() {
         frame.setLocationRelativeTo(null); // Centra la ventana en la pantalla
         frame.setVisible(true);
     }
-
+    /**
+     * Ordena la tabla actual en función de una lista de columnas y criterios de ordenación, y devuelve una nueva instancia ordenada de {@code Tabla}.
+     * Este método utiliza una lista de nombres de columna y una lista de booleanos para determinar el orden ascendente o descendente
+     * en cada columna. Luego reorganiza las celdas en cada columna de acuerdo con el orden especificado.
+     *
+     * @param nombreColumna una lista con los nombres de las columnas por las que se ordenará.
+     * @param criteriosAscendentes una lista de booleanos que indica si cada columna se ordena de manera ascendente (true) o descendente (false).
+     * @return una nueva instancia de {@code Tabla} con los datos ordenados.
+     */
     public Tabla Ordenamiento(List<String> nombreColumna, List<Boolean> criteriosAscendentes) { 
         // Crear una copia de la tabla actual
         Tabla tablanueva = new Tabla(this);

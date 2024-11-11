@@ -543,6 +543,17 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     return tablaResultado;
     }
 
+
+    /**
+     * Filtra las filas de la tabla basándose en un rango específico de valores para una columna dada.
+     * Devuelve una nueva tabla que contiene solo las filas cuyo valor en la columna indicada está dentro
+     del rango especificado (valor mínimo y máximo).
+     *
+     * @param nombreColumna El nombre de la columna en la que se va a realizar el filtrado.
+     * @param valorMin El valor mínimo que debe tener la celda de la columna para que la fila sea incluida.
+     * @param valorMax El valor máximo que puede tener la celda de la columna para que la fila sea incluida.
+     * @return Una nueva instancia de la clase Tabla, que contiene las filas que cumplen con el criterio de filtrado.
+     */
     @Override
     public Tabla filtrarPorRango(String nombreColumna, Comparable<?> valorMin, Comparable<?> valorMax) {
         // Crear una nueva tabla para almacenar los resultados filtrados
@@ -576,7 +587,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
 
         return tablaFiltrada;
     }
-
+    
         /**
      * Obtiene los nombres de todas las columnas en la tabla.
      *

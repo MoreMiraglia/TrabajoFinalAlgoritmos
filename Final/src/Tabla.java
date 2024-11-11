@@ -506,18 +506,6 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
 
     }
     /**
-     * Obtiene los nombres de todas las columnas en la tabla.
-     *
-     * @return Una lista de cadenas que contiene los nombres de todas las columnas.
-     */        
-    private List<String> obtenerNombresColumnas() {
-        List<String> nombres = new ArrayList<>();
-        for (Columna<?> columna : columnas) {
-            nombres.add(columna.getNombre());
-        }
-        return nombres;
-    }
-    /**
      * Busca un valor específico en una columna y devuelve una nueva tabla con las filas que contienen ese valor.
      *
      * @param nombreColumna El nombre de la columna en la que buscar el valor.
@@ -553,6 +541,53 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     }
 
     return tablaResultado;
+    }
+
+    @Override
+    public Tabla filtrarPorRango(String nombreColumna, Comparable<?> valorMin, Comparable<?> valorMax) {
+        // Crear una nueva tabla para almacenar los resultados filtrados
+        Tabla tablaFiltrada = new Tabla("Tabla Filtrada por Rango", obtenerNombresColumnas());
+
+        // Iterar sobre cada fila
+        for (int i = 0; i < cantFilas; i++) {
+            Comparable<Object> valorFila = null;
+
+            // Encontrar la columna especificada
+            for (Columna<?> columna : columnas) {
+                if (columna.getNombre().equals(nombreColumna)) {
+                    // Obtener el valor de la celda en la fila actual y verificar si es Comparable
+                    Object valorCelda = columna.getCeldas().get(i).getValor();
+                    if (valorCelda instanceof Comparable) {
+                        valorFila = (Comparable<Object>) valorCelda;
+                    }
+                    break;
+                }
+            }
+
+            // Si el valor de la celda no es nulo y está dentro del rango, agregar la fila a la nueva tabla
+            if (valorFila != null && valorFila.compareTo(valorMin) >= 0 && valorFila.compareTo(valorMax) <= 0) {
+                List<Object> valoresFila = new ArrayList<>();
+                for (Columna<?> columna : columnas) {
+                    valoresFila.add(columna.getCeldas().get(i).getValor());
+                }
+                tablaFiltrada.agregarFila(valoresFila);
+            }
+        }
+
+        return tablaFiltrada;
+    }
+
+        /**
+     * Obtiene los nombres de todas las columnas en la tabla.
+     *
+     * @return Una lista de cadenas que contiene los nombres de todas las columnas.
+     */        
+    private List<String> obtenerNombresColumnas() {
+        List<String> nombres = new ArrayList<>();
+        for (Columna<?> columna : columnas) {
+            nombres.add(columna.getNombre());
+        }
+        return nombres;
     }
     /**
      * Lee todas las celdas que contienen valores nulos (NA) en la tabla.

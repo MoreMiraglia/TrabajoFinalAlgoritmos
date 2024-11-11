@@ -5,30 +5,50 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Clase para gestionar la lectura y escritura de datos en archivos CSV.
+ */
 public class ArchivoCSV {
     private Map<String, List<Object>> columnas;
 
-    // Constructor que recibe la ruta del archivo y carga los datos
+    /**
+     * Constructor que carga los datos desde un archivo CSV.
+     *
+     * @param archivoCSV La ruta del archivo CSV a leer.
+     */
     public ArchivoCSV(String archivoCSV) {
         columnas = new LinkedHashMap<>();
         cargarDatos(archivoCSV);
     }
 
-    // Constructor alternativo para guardar una Tabla en un archivo CSV
+    /**
+     * Constructor que guarda una tabla en un archivo CSV.
+     *
+     * @param tabla       La tabla que se va a guardar.
+     * @param rutaDestino La ruta donde se guardará el archivo CSV.
+     */
     public ArchivoCSV(Tabla tabla, String rutaDestino) {
         guardarTablaEnCSV(tabla, rutaDestino);
     }
 
+    /**
+     * Devuelve un mapa que contiene los nombres de las columnas y sus datos.
+     *
+     * @return Un mapa con los nombres de las columnas como claves y listas de datos como valores.
+     */
     public Map<String, List<Object>> getMap() {
         return columnas;
     }
 
-    // Método para cargar datos desde el archivo CSV
+    /**
+     * Carga los datos desde el archivo CSV y los almacena en el mapa de columnas.
+     *
+     * @param archivoCSV La ruta del archivo CSV a leer.
+     */
     private void cargarDatos(String archivoCSV) {
         String linea;
         String separador = ",";
@@ -63,10 +83,15 @@ public class ArchivoCSV {
         }
     }
 
-    // Método para convertir cada dato al tipo adecuado
+    /**
+     * Convierte un dato de cadena de texto al tipo adecuado (Integer, Double, Boolean o String).
+     *
+     * @param dato El dato en forma de cadena de texto.
+     * @return El dato convertido al tipo adecuado o null si está vacío o es "NA".
+     */
     private Object convertirDato(String dato) {
-        if (dato.isEmpty() || dato.equalsIgnoreCase("NA")) { // Validación para "NA" y vacío
-            return null; // Valor nulo para valores vacíos o "NA"
+        if (dato.isEmpty() || dato.equalsIgnoreCase("NA")) {
+            return null;
         }
 
         // Intentar convertir a boolean
@@ -79,15 +104,20 @@ public class ArchivoCSV {
         // Intentar convertir a Double o Integer
         try {
             if (dato.contains(".")) {
-                return Double.parseDouble(dato); // Intenta como Double
+                return Double.parseDouble(dato);
             }
-            return Integer.parseInt(dato); // Intenta como Integer
+            return Integer.parseInt(dato);
         } catch (NumberFormatException e) {
             return dato; // Si no es numérico ni booleano, devolver como String
         }
     }
 
-    // Método para guardar una Tabla en un archivo CSV
+    /**
+     * Guarda los datos de una tabla en un archivo CSV.
+     *
+     * @param tabla           La tabla cuyos datos se van a guardar.
+     * @param archivoDestino  La ruta donde se guardará el archivo CSV.
+     */
     public void guardarTablaEnCSV(Tabla tabla, String archivoDestino) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoDestino))) {
             // Escribir la cabecera con los nombres de las columnas

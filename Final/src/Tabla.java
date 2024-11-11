@@ -298,6 +298,15 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         return nuevaTabla;
     }
 
+    /**
+     * Actualiza los índices de cada columna después de la eliminación de una fila.
+     * <p>
+     * Este método se llama cuando una fila es eliminada de la tabla. Para cada columna,
+     * se ajustan los índices de las celdas para reflejar la eliminación del índice especificado.
+     * </p>
+     *
+     * @param indiceEliminado El índice de la fila que fue eliminada de la tabla.
+     */
     private void actualizarIndices(int indiceEliminado){
         for (Columna columna: columnas){
             columna.actualizarIndices(indiceEliminado);
@@ -465,6 +474,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
             this.agregarFila(fila);
         }
     }
+    
     /**
      * Filtra las filas de la tabla de acuerdo a un valor específico en una columna y devuelve una nueva tabla con las filas filtradas.
      * Si la columna no existe o el valor es incompatible, se lanza una excepción.
@@ -475,75 +485,50 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
      * @throws IllegalArgumentException Si la columna no existe o el valor es de un tipo incompatible.
      */
     @Override
-    public Tabla filtrarPorColumna(String nombreColumna, Object valor) {
-    // Crear una nueva tabla para almacenar los resultados filtrados
-    Tabla tablaFiltrada = new Tabla("Tabla Filtrada", obtenerNombresColumnas());
-
-    // Iterar sobre cada fila
-    for (int i = 0; i < cantFilas; i++) {
-        Object valorFila = null;
-
-        // Encontrar la columna especificada
+    public Tabla filtrarPorColumna(String nombreColumna, Object valor) throws IllegalArgumentException {
+        // Verificar que la columna exista
+        Columna<?> columnaFiltro = null;
         for (Columna<?> columna : columnas) {
             if (columna.getNombre().equals(nombreColumna)) {
-                // Obtener el valor de la celda en la fila actual
-                valorFila = columna.getCeldas().get(i).getValor();
+                columnaFiltro = columna;
                 break;
             }
         }
-
-        // Si el valor de la celda no es nulo y coincide con el valor dado, agregar la fila a la nueva tabla
-        if (valorFila != null && valorFila.equals(valor)) {
-            List<Object> valoresFila = new ArrayList<>();
-            for (Columna<?> columna : columnas) {
-                valoresFila.add(columna.getCeldas().get(i).getValor());
-            }
-            tablaFiltrada.agregarFila(valoresFila);
+        if (columnaFiltro == null) {
+            throw new IllegalArgumentException("La columna '" + nombreColumna + "' no existe en la tabla.");
         }
-    }
-
-    return tablaFiltrada;
-
-    }
-    /**
-     * Busca un valor específico en una columna y devuelve una nueva tabla con las filas que contienen ese valor.
-     *
-     * @param nombreColumna El nombre de la columna en la que buscar el valor.
-     * @param valor El valor que se busca en la columna.
-     * @return Una nueva instancia de Tabla con las filas que contienen el valor buscado.
-     */
-    @Override
-    public Tabla buscarValor(String nombreColumna, Object valor) {
-    // Crear una nueva tabla para almacenar los resultados encontrados
-    Tabla tablaResultado = new Tabla("Resultados de Búsqueda", obtenerNombresColumnas());
-
-    // Iterar sobre cada fila
-    for (int i = 0; i < cantFilas; i++) {
-        Object valorFila = null;
-
-        // Encontrar la columna especificada
-        for (Columna<?> columna : columnas) {
-            if (columna.getNombre().equals(nombreColumna)) {
-                // Obtener el valor de la celda en la fila actual
-                valorFila = columna.getCeldas().get(i).getValor();
-                break;
+    
+        // Verificar que el tipo del valor sea compatible con la columna
+        if (!columnaFiltro.getCeldas().isEmpty()) {
+            Object primerValor = columnaFiltro.getCeldas().get(0).getValor();
+            if (primerValor != null && !primerValor.getClass().isInstance(valor)) {
+                throw new IllegalArgumentException("El valor proporcionado es de tipo incompatible con la columna '" + nombreColumna + "'.");
             }
         }
-
-        // Si el valor de la celda no es nulo y coincide con el valor dado, agregar la fila a la nueva tabla
-        if (valorFila != null && valorFila.equals(valor)) {
-            List<Object> valoresFila = new ArrayList<>();
-            for (Columna<?> columna : columnas) {
-                valoresFila.add(columna.getCeldas().get(i).getValor());
+    
+        // Crear una nueva tabla para almacenar los resultados filtrados
+        Tabla tablaFiltrada = new Tabla("Tabla Filtrada", obtenerNombresColumnas());
+    
+        // Iterar sobre cada fila
+        for (int i = 0; i < cantFilas; i++) {
+            Object valorFila = null;
+    
+            // Obtener el valor de la celda en la fila actual de la columna especificada
+            valorFila = columnaFiltro.getCeldas().get(i).getValor();
+    
+            // Si el valor de la celda no es nulo y coincide con el valor dado, agregar la fila a la nueva tabla
+            if (valorFila != null && valorFila.equals(valor)) {
+                List<Object> valoresFila = new ArrayList<>();
+                for (Columna<?> columna : columnas) {
+                    valoresFila.add(columna.getCeldas().get(i).getValor());
+                }
+                tablaFiltrada.agregarFila(valoresFila);
             }
-            tablaResultado.agregarFila(valoresFila);
         }
+    
+        return tablaFiltrada;
     }
-
-    return tablaResultado;
-    }
-
-
+    
     /**
      * Filtra las filas de la tabla basándose en un rango específico de valores para una columna dada.
      * Devuelve una nueva tabla que contiene solo las filas cuyo valor en la columna indicada está dentro
@@ -555,26 +540,47 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
      * @return Una nueva instancia de la clase Tabla, que contiene las filas que cumplen con el criterio de filtrado.
      */
     @Override
-    public Tabla filtrarPorRango(String nombreColumna, Comparable<?> valorMin, Comparable<?> valorMax) {
+    public Tabla filtrarPorRango(String nombreColumna, Comparable<?> valorMin, Comparable<?> valorMax) throws IllegalArgumentException, ClassCastException {
+        // Verificar que la columna existe
+        Columna<?> columnaFiltrar = null;
+        for (Columna<?> columna : columnas) {
+            if (columna.getNombre().equals(nombreColumna)) {
+                columnaFiltrar = columna;
+                break;
+            }
+        }
+    
+        if (columnaFiltrar == null) {
+            throw new IllegalArgumentException("La columna '" + nombreColumna + "' no existe en la tabla.");
+        }
+    
+        // Verificar que valorMin y valorMax son del mismo tipo que la columna especificada
+        if (!columnaFiltrar.getCeldas().isEmpty()) {
+            Object valorEjemplo = columnaFiltrar.getCeldas().get(0).getValor();
+            if (!(valorEjemplo instanceof Comparable<?>)) {
+                throw new ClassCastException("Los valores de la columna '" + nombreColumna + "' no implementan Comparable.");
+            }
+    
+            if (valorMin != null && valorMax != null) {
+                if (!valorEjemplo.getClass().isInstance(valorMin) || !valorEjemplo.getClass().isInstance(valorMax)) {
+                    throw new ClassCastException("Los tipos de valorMin y valorMax no coinciden con el tipo de la columna.");
+                }
+            }
+        }
+    
         // Crear una nueva tabla para almacenar los resultados filtrados
         Tabla tablaFiltrada = new Tabla("Tabla Filtrada por Rango", obtenerNombresColumnas());
-
+    
         // Iterar sobre cada fila
         for (int i = 0; i < cantFilas; i++) {
             Comparable<Object> valorFila = null;
-
-            // Encontrar la columna especificada
-            for (Columna<?> columna : columnas) {
-                if (columna.getNombre().equals(nombreColumna)) {
-                    // Obtener el valor de la celda en la fila actual y verificar si es Comparable
-                    Object valorCelda = columna.getCeldas().get(i).getValor();
-                    if (valorCelda instanceof Comparable) {
-                        valorFila = (Comparable<Object>) valorCelda;
-                    }
-                    break;
-                }
+    
+            // Obtener el valor de la celda en la fila actual
+            Object valorCelda = columnaFiltrar.getCeldas().get(i).getValor();
+            if (valorCelda instanceof Comparable) {
+                valorFila = (Comparable<Object>) valorCelda;
             }
-
+    
             // Si el valor de la celda no es nulo y está dentro del rango, agregar la fila a la nueva tabla
             if (valorFila != null && valorFila.compareTo(valorMin) >= 0 && valorFila.compareTo(valorMax) <= 0) {
                 List<Object> valoresFila = new ArrayList<>();
@@ -584,9 +590,10 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
                 tablaFiltrada.agregarFila(valoresFila);
             }
         }
-
+    
         return tablaFiltrada;
     }
+    
     
         /**
      * Obtiene los nombres de todas las columnas en la tabla.
@@ -667,7 +674,10 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         }
         System.out.println();
     }
-
+    /**
+     * Muestra las primeras 5 filas de la tabla, con los nombres de columnas y los datos correspondientes.
+     * Si la tabla posee menos de 5 filas, se mostraran el total de las fillas que contiene.
+     */
     public void head() {
         head(5); // Llama a la versión de head con parámetro 5
     }
@@ -693,7 +703,8 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         mostrarEnVentana("Head (Primeras " + x + " filas) de " + nombreTabla, tabla);
     }
     /**
-     * Muestra las últimas 5 filas de la tabla llamando al método `tail(int x)` con el parámetro 5.
+     * Muestra las últimas 5 filas de la tabla, con los nombres de columnas y los datos correspondientes..
+     * * Si 5 es mayor al número de filas disponibles, se ajusta al número máximo de filas.
      */
     public void tail() {
         tail(5); // Llama a la versión de tail con parámetro 5
@@ -754,7 +765,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         mostrarEnVentana("Fila " + indice + " de " + nombreTabla, tabla);
     }
     /**
-     * Muestra toda la tabla, con los nombres de columnas y los datos correspondientes, bien alineados.
+     * Muestra toda la tabla, con los nombres de columnas y los datos correspondientes.
      */
     public void mostrarTabla() {
         String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);

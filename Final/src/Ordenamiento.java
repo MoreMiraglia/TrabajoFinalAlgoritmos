@@ -2,13 +2,33 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Proporciona funcionalidad para ordenar las filas de una tabla en base a los valores
+ * de una o más columnas y los criterios de orden (ascendente o descendente) especificados.
+ */
 class Ordenamiento {
     private final Tabla tabla;
 
+    /**
+     * Constructor de la clase Ordenamiento.
+     *
+     * @param tabla La tabla cuyos datos se van a ordenar.
+     */
     public Ordenamiento(Tabla tabla) {
         this.tabla = tabla;
     }
 
+    /**
+     * Obtiene una lista de índices que representan el orden de las filas de la tabla
+     * en base a los criterios de ordenación definidos para cada columna.
+     *
+     * @param nombresColumnas      Los nombres de las columnas a ordenar.
+     * @param criteriosAscendentes Una lista de valores booleanos que indica si cada columna
+     *                             se ordena de forma ascendente (true) o descendente (false).
+     * @return Una lista de índices que representa el nuevo orden de las filas de la tabla.
+     * @throws IllegalArgumentException Si la cantidad de nombres de columnas y criterios no coincide
+     *                                  o si alguna columna especificada no se encuentra en la tabla.
+     */
     public List<Integer> obtenerOrdenIndices(List<String> nombresColumnas, List<Boolean> criteriosAscendentes) {
         if (nombresColumnas.size() != criteriosAscendentes.size()) {
             throw new IllegalArgumentException("La cantidad de columnas y criterios debe coincidir.");
@@ -60,6 +80,13 @@ class Ordenamiento {
         return indicesFilas; // Retorna el nuevo orden de índices de las filas
     }
 
+    /**
+     * Obtiene la celda ubicada en una columna específica y en el índice de fila indicado.
+     *
+     * @param nombreColumna El nombre de la columna de la celda.
+     * @param filaIdx       El índice de la fila de la celda.
+     * @return La celda en la columna y fila especificadas, o null si no se encuentra la columna.
+     */
     private Celda<Object> obtenerCelda(String nombreColumna, int filaIdx) {
         for (Columna<?> columna : tabla.getColumnas()) {
             if (columna.getNombre().equals(nombreColumna)) {

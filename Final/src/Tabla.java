@@ -3,6 +3,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.*;
 import java.awt.*;
 
@@ -394,15 +396,25 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     @Override
     public Tabla eliminarFilasConNAs() {
         Tabla nuevaTabla = new Tabla(this);
-        List <Celda<Object>> celdasNAs = leerNAs();
+        List<Celda<Object>> celdasNAs = leerNAs();
         if (celdasNAs.isEmpty()) {
             System.out.println("No hay valores NA en la tabla.");
             return null;
         }
-        for (Celda celda:celdasNAs){
-            nuevaTabla.eliminarFila(celda.getIndice());
+
+        // Obtener índices únicos en orden descendente para eliminar correctamente
+        List<Integer> indices = celdasNAs.stream()
+            .map(Celda::getIndice)
+            .distinct()
+            .sorted((a, b) -> b - a)  // Ordenar en orden descendente
+            .toList();
+
+        // Eliminar filas en orden descendente
+        for (Integer indice : indices) {
+            nuevaTabla = nuevaTabla.eliminarFila(indice);
         }
-        System.out.println("Se eliminaron " + celdasNAs.size() + " filas con valores NA.");
+
+        System.out.println("Se eliminaron " + indices.size() + " filas con valores NA.");
         return nuevaTabla;
     }
     /**
@@ -417,22 +429,32 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     public Tabla eliminarFilasConNAs(String nombreColumna) {
         Tabla nuevaTabla = new Tabla(this);
         int cantEliminadas = 0;
-        List <Celda<Object>> celdasNAs = leerNAs();
+    
+        // Filtrar solo las celdas NA de la columna indicada
+        List<Celda<Object>> celdasNAs = leerNAs()
+            .stream()
+            .filter(celda -> celda.getNombreColumna().equals(nombreColumna))
+            .toList();
+    
         if (celdasNAs.isEmpty()) {
-            System.out.println("No hay valores NA en la columna" + nombreColumna);
+            System.out.println("No hay valores NA en la columna " + nombreColumna);
             return null;
         }
-        for (Celda celda:celdasNAs){
-            if (celda.getNombreColumna().equals(nombreColumna)){
-                nuevaTabla.eliminarFila(celda.getIndice());
-                cantEliminadas++;
-            }
+    
+        // Obtener índices de las filas que tienen NA en la columna específica, en orden descendente
+        List<Integer> indices = celdasNAs.stream()
+            .map(Celda::getIndice)
+            .distinct()
+            .sorted((a, b) -> b - a)  // Orden descendente
+            .toList();
+    
+        // Eliminar filas en el nuevo objeto de tabla en orden descendente
+        for (Integer indice : indices) {
+            nuevaTabla = nuevaTabla.eliminarFila(indice);
+            cantEliminadas++;
         }
-        if (cantEliminadas == 0) {
-            System.out.println("No hay valores NA en la columna" + nombreColumna);
-            return null;
-        }
-        System.out.println("Se eliminaron " + cantEliminadas + " filas con valores NA de la columna" + nombreColumna);
+    
+        System.out.println("Se eliminaron " + cantEliminadas + " filas con valores NA de la columna " + nombreColumna);
         return nuevaTabla;
     }
     /**
@@ -769,10 +791,10 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
      */
     public void mostrarTabla() {
         String[] nombresColumnas = columnas.stream().map(Columna::getNombre).toArray(String[]::new);
-        String[][] datos = new String[cantFilas][cantColumnas];
+        String[][] datos = new String[cantFilas][columnas.size()];
 
         for (int i = 0; i < cantFilas; i++) {
-            for (int j = 0; j < cantColumnas; j++) {
+            for (int j = 0; j < columnas.size(); j++) {
                 Object valor = columnas.get(j).getCeldas().get(i).getValor();
                 datos[i][j] = valor == null ? "NA" : valor.toString();
             }
@@ -805,6 +827,47 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     public int getCantColumnas() {
         return cantColumnas;
     }
+    /**
+     * Obtiene el valor de una celda específica dentro de una columna identificada por su nombre.
+     *
+     * @param indice el índice de la celda dentro de la columna, debe estar en el rango válido.
+     * @param nombreColumna el nombre de la columna de la que se quiere obtener el valor.
+     *                      No debe ser {@code null} ni una cadena vacía.
+     * @return el valor de la celda en la posición indicada dentro de la columna especificada,
+     *         o {@code null} si no se encuentra la celda en el índice especificado.
+     * @throws IllegalArgumentException si {@code nombreColumna} es {@code null} o vacío, 
+     *                                  o si no existe una columna con el nombre dado.
+     * @throws IndexOutOfBoundsException si el índice está fuera del rango de celdas de la columna.
+     */
+    public Object getValor(int indice, String nombreColumna) {
+        // Validar que el nombre de la columna no sea null o vacío
+        if (nombreColumna == null || nombreColumna.isEmpty()) {
+            throw new IllegalArgumentException("El nombre de la columna no puede ser null o vacío.");
+        }
+        
+        // Buscar la columna por nombre
+        for (Columna<?> columna : columnas) {
+            if (columna.getNombre().equals(nombreColumna)) {
+                // Verificar que el índice esté dentro del rango de celdas
+                if (indice < 0 || indice >= columna.getCeldas().size()) {
+                    throw new IndexOutOfBoundsException("El índice está fuera del rango de celdas.");
+                }
+                
+                // Buscar la celda con el índice específico
+                for (Celda<?> celda : columna.getCeldas()) {
+                    if (celda.getIndice() - 1 == indice) {
+                        return celda.getValor();
+                    }
+                }
+                // Si no encuentra la celda con el índice específico
+                return null;
+            }
+        }
+        
+        // Si no encuentra la columna con el nombre especificado
+        throw new IllegalArgumentException("La columna con nombre '" + nombreColumna + "' no existe.");
+    }    
+    
     /**
      * Muestra los nombres de todas las columnas de la tabla en la consola.
      */

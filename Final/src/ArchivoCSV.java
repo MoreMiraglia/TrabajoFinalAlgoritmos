@@ -95,9 +95,9 @@ public class ArchivoCSV {
         }
 
         // Intentar convertir a boolean
-        if (dato.equalsIgnoreCase("true") || dato.equals("1")) {
+        if (dato.equalsIgnoreCase("true")) {
             return true;
-        } else if (dato.equalsIgnoreCase("false") || dato.equals("0")) {
+        } else if (dato.equalsIgnoreCase("false")) {
             return false;
         }
 

@@ -276,6 +276,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         } else {
             System.out.println("La columna '" + nombreColumna + "' no existe en la tabla.");
         }
+        nuevaTabla.actualizarIndices();
         return nuevaTabla;
     }
     /**
@@ -295,7 +296,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         for (Columna<?> columna : nuevaTabla.columnas) {
             columna.eliminarFila(indiceFila);
         }
-        nuevaTabla.actualizarIndices(indiceFila);
+        nuevaTabla.actualizarIndices();
         nuevaTabla.cantFilas--; // Actualizar la cantidad de filas
         return nuevaTabla;
     }
@@ -309,11 +310,12 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
      *
      * @param indiceEliminado El índice de la fila que fue eliminada de la tabla.
      */
-    private void actualizarIndices(int indiceEliminado){
-        for (Columna columna: columnas){
-            columna.actualizarIndices(indiceEliminado);
+    public void actualizarIndices() {
+        for (Columna columna : columnas) {
+            columna.actualizarIndices();  
         }
     }
+    
     /**
      * Muestra en consola el tipo de dato de cada columna en la tabla.
      * Recorre todas las columnas de la tabla y llama al método {@link Columna#getTipoDeDato()} 
@@ -855,7 +857,7 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
                 
                 // Buscar la celda con el índice específico
                 for (Celda<?> celda : columna.getCeldas()) {
-                    if (celda.getIndice() - 1 == indice) {
+                    if (celda.getIndice() == indice) {
                         return celda.getValor();
                     }
                 }
@@ -1018,8 +1020,25 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
                 ((List<Celda<?>>) celdasColumna).set(i, celdasOrdenadas.get(i));
             }
         }
-
+        tablanueva.actualizarIndices();
         return tablanueva;
     }
+    //DESPUES BORRAR
+    public void mostrarColumna(String nombreColumna) {
+        // Buscar la columna por nombre
+        for (Columna<?> columna : columnas) {
+            if (columna.getNombre().equals(nombreColumna)) {
+                System.out.println("Columna: " + nombreColumna);
+                // Mostrar cada celda con su índice
+                for (Celda<?> celda : columna.getCeldas()) {
+                    System.out.println("Índice: " + celda.getIndice() + ", Valor: " + celda.getValor());
+                }
+                return; // Salir del método después de encontrar y mostrar la columna
+            }
+        }
+        // Mensaje si la columna no se encuentra
+        System.out.println("La columna con nombre '" + nombreColumna + "' no existe.");
+    }
+    
 
 }

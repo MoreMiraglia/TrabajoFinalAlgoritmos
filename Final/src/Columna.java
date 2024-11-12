@@ -103,11 +103,10 @@ class Columna<T> {
      *
      * @param indiceEliminado el índice de la celda eliminada.
      */
-    public void actualizarIndices(int indiceEliminado){
-        for (Celda celda:celdas){
-            if (celda.getIndice() > indiceEliminado ){
-                celda.setIndice(celda.getIndice()-1);
-            }
+    public void actualizarIndices() {
+        for (int i = 0; i < celdas.size(); i++) {
+            Celda celda = celdas.get(i);  // Si este acceso falla, revisar `getCeldas`
+            celda.setIndice(i);  // Actualiza el índice en cada celda
         }
     }
     /**

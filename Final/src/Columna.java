@@ -99,9 +99,6 @@ class Columna<T> {
     }
     /**
      * Actualiza los índices de las celdas después de eliminar una celda en una posición específica.
-     * Todas las celdas con un índice mayor al índice eliminado se decrementan en uno.
-     *
-     * @param indiceEliminado el índice de la celda eliminada.
      */
     public void actualizarIndices() {
         for (int i = 0; i < celdas.size(); i++) {

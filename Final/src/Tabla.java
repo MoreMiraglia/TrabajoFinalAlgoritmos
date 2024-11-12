@@ -302,13 +302,11 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
     }
 
     /**
-     * Actualiza los índices de cada columna después de la eliminación de una fila.
+     * Actualiza los índices de cada columna después de la eliminación de una fila o columna.
      * <p>
-     * Este método se llama cuando una fila es eliminada de la tabla. Para cada columna,
+     * Este método se llama cuando una fila o columna es eliminada de la tabla. Para cada columna,
      * se ajustan los índices de las celdas para reflejar la eliminación del índice especificado.
      * </p>
-     *
-     * @param indiceEliminado El índice de la fila que fue eliminada de la tabla.
      */
     public void actualizarIndices() {
         for (Columna columna : columnas) {
@@ -1023,22 +1021,5 @@ class Tabla implements Manipulacion, Limpieza, Filtro{
         tablanueva.actualizarIndices();
         return tablanueva;
     }
-    //DESPUES BORRAR
-    public void mostrarColumna(String nombreColumna) {
-        // Buscar la columna por nombre
-        for (Columna<?> columna : columnas) {
-            if (columna.getNombre().equals(nombreColumna)) {
-                System.out.println("Columna: " + nombreColumna);
-                // Mostrar cada celda con su índice
-                for (Celda<?> celda : columna.getCeldas()) {
-                    System.out.println("Índice: " + celda.getIndice() + ", Valor: " + celda.getValor());
-                }
-                return; // Salir del método después de encontrar y mostrar la columna
-            }
-        }
-        // Mensaje si la columna no se encuentra
-        System.out.println("La columna con nombre '" + nombreColumna + "' no existe.");
-    }
-    
-
+   
 }
